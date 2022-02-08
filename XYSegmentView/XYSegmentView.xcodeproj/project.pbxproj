@@ -19,6 +19,7 @@
 		B47EE9AD27B1097600ED1982 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE9AC27B1097600ED1982 /* CommonViewController.swift */; };
 		B4BD7B1727B0C192008E1278 /* XYSegmentTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */; };
 		B4EBE9D127B162EB007BCEBD /* XYSegmentViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */; };
+		B4EBE9D327B2A10B007BCEBD /* XYSegmentPublicProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		B47EE9AC27B1097600ED1982 /* CommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentTitleView.swift; sourceTree = "<group>"; };
 		B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentViewConfig.swift; sourceTree = "<group>"; };
+		B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentPublicProtocols.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 		B456FE0427AFA5A000A822CB /* XYSegmentView */ = {
 			isa = PBXGroup;
 			children = (
+				B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */,
 				B456FE0527AFA5E200A822CB /* XYSegmentView.swift */,
 				B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */,
 				B47EE9AA27B1083C00ED1982 /* XYSegmentContainerView.swift */,
@@ -165,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B47EE9A927B0E00100ED1982 /* XYSegmentFuncs.swift in Sources */,
+				B4EBE9D327B2A10B007BCEBD /* XYSegmentPublicProtocols.swift in Sources */,
 				B456FDF527AFA56300A822CB /* ViewController.swift in Sources */,
 				B47EE9AB27B1083C00ED1982 /* XYSegmentContainerView.swift in Sources */,
 				B4EBE9D127B162EB007BCEBD /* XYSegmentViewConfig.swift in Sources */,

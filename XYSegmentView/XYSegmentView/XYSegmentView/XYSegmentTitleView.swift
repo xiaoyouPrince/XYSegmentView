@@ -48,6 +48,11 @@ class XYSegmentTitleView: UIView {
     }();
     
     init(frame: CGRect, titles: [String]){
+        
+        if titles.isEmpty {
+            fatalError("the titles can not be empty")
+        }
+        
         // 1.给自己的titles赋值
         self.titles = titles
         
@@ -93,6 +98,7 @@ extension XYSegmentTitleView{
         let labelH : CGFloat = frame.height - kScrollLineH
         let labelY : CGFloat = 0.0
         
+        var totoalWidth : CGFloat = 0
         for (index,title) in titles.enumerated(){
             
             // 1.创建Label
@@ -104,9 +110,12 @@ extension XYSegmentTitleView{
             label.tag = index
             label.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
             label.textAlignment = .center
+            label.sizeToFit()
             
             // 3. 设置frame
-            let labelX : CGFloat = CGFloat(index) * labelW
+            let labelW : CGFloat = label.bounds.width + 20
+            let labelX : CGFloat = totoalWidth
+            totoalWidth += labelW
             label.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
             
             // 4.添加
@@ -122,6 +131,8 @@ extension XYSegmentTitleView{
             
         }
         
+        scrollView.contentSize = CGSize(width: titleLabels.last!.frame.maxX, height: 0)
+        
     }
     // MARK: - 设置底线 和 可以滚动的线
     private func setupBottomLineAndScrollLines(){
@@ -135,9 +146,7 @@ extension XYSegmentTitleView{
         guard let label = titleLabels.first else {return}
         label.textColor = UIColor(r: kSelectColor.0, g: kSelectColor.1, b: kSelectColor.2)
         scrollLine.frame = CGRect(x: label.bounds.origin.x, y: label.frame.origin.y+label.frame.height, width: label.frame.width, height: kScrollLineH)
-        addSubview(scrollLine)
-        
-        
+            scrollView.addSubview(scrollLine)
 
     }
 }
@@ -169,13 +178,36 @@ extension XYSegmentTitleView{
         
         // 5.滚动条的滚动
         let scrollLinePosition : CGFloat =  currentLabel.frame.origin.x
+        let scrollLineWidth : CGFloat =  currentLabel.frame.size.width
         UIView.animate(withDuration: 0.15) {
             self.scrollLine.frame.origin.x = scrollLinePosition
+            self.scrollLine.frame.size.width = scrollLineWidth
+        } completion: {_ in
+            // 5.1 当前选中 title 滚动到中间位置
+            self.scrollCurrentTitleCenter()
         }
         
         // 6.通知代理做事情
         delegate?.pageTitleView(titleView: self, selectIndex: currentIndex)
         
+    }
+    
+    fileprivate func scrollCurrentTitleCenter() {
+        
+        var offsetX: CGFloat = 0
+        if self.scrollLine.center.x < self.scrollView.center.x {
+            offsetX = 0
+        }else
+        if self.scrollLine.center.x > self.scrollView.center.x,
+           self.scrollView.contentSize.width - self.scrollLine.center.x > self.scrollView.center.x
+        {
+            offsetX = self.scrollLine.center.x - self.scrollView.bounds.width / 2
+            
+        }else{
+            offsetX = self.scrollView.contentSize.width - self.scrollView.bounds.width
+        }
+        
+        self.scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: true)
     }
     
 }
@@ -195,6 +227,10 @@ extension XYSegmentTitleView{
         let moveX = moveTotalX * progress
         scrollLine.frame.origin.x = sourceLabel.frame.origin.x + moveX
         
+        let deltaWidth = (targetLabel.bounds.width - sourceLabel.bounds.width) * progress
+        let lineWidth = deltaWidth + sourceLabel.bounds.width
+        scrollLine.frame.size.width = lineWidth
+        
         // 3.颜色的渐变(复杂)
         // 3.1.取出变化的范围
         let colorDelta = (kSelectColor.0 - kNormalColor.0, kSelectColor.1 - kNormalColor.1, kSelectColor.2 - kNormalColor.2)
@@ -207,6 +243,11 @@ extension XYSegmentTitleView{
         
         // 4.记录最新的index
         currentIndex = targetIndex
+        
+        if progress == 1.0 {
+            // print("滑动完成------")
+            scrollCurrentTitleCenter()
+        }
         
     }
         

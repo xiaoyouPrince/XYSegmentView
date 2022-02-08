@@ -22,7 +22,8 @@ class ViewController: UIViewController {
         
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
-        let titles = ["推荐","游戏","娱乐","趣玩"];
+        //let titles = ["推荐","游戏","娱乐","趣玩"];
+        let titles = ["推荐","游戏","娱乐","趣玩","推荐333","游戏333游戏哈哈","娱乐0","趣玩1","推荐2313","游戏993js","娱乐jjddz","趣玩qnmb"];
         
         // content
         let contentY : CGFloat = titleViewH
@@ -32,10 +33,9 @@ class ViewController: UIViewController {
         
         // 2.创建对应的contentView
         var contentVcs = [UIViewController]()
-        contentVcs.append(CommonViewController())
-        contentVcs.append(CommonViewController())
-        contentVcs.append(CommonViewController())
-        contentVcs.append(CommonViewController())
+        for _ in titles {
+            contentVcs.append(CommonViewController())
+        }
         
         let config = XYSegmentViewConfig()
         config.frame = segFrame
