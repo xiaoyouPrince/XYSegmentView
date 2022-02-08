@@ -10,6 +10,8 @@ import UIKit
 // MARK: - 定义自己代理
 protocol XYSegmentTitleViewDelegate : AnyObject {
     
+    var config: XYSegmentViewConfig {set get}
+    
     // 这里只是方法的定义 --selectIndex index :分别是内部和外部属性
     func pageTitleView(titleView : XYSegmentTitleView , selectIndex index : Int)
     
@@ -26,7 +28,12 @@ class XYSegmentTitleView: UIView {
     fileprivate var titles : [String]
     fileprivate var titleLabels : [UILabel] = [UILabel]()
     fileprivate var currentIndex : Int = 0 // 设置默认的当前下标为0
-    weak var delegate : XYSegmentTitleViewDelegate?
+    weak var delegate : XYSegmentTitleViewDelegate?{
+        didSet{
+            // 创建UI
+            setupUI()
+        }
+    }
     
     // MARK: - 懒加载属性
     fileprivate lazy var scrollView : UIScrollView = {[weak self] in
@@ -59,8 +66,7 @@ class XYSegmentTitleView: UIView {
         // 2.通过frame构造实例变量
         super.init(frame:frame)
         
-        // 3.创建UI
-        setupUI()
+        
     }
     
     // 自定义构造方法必须重写initwithCoder方法
@@ -94,7 +100,13 @@ extension XYSegmentTitleView{
     private func setupTitleLabels(){
         
         // 0.对于有些只需要设置一遍的东西，放到外面来
-        let labelW : CGFloat = frame.width / CGFloat(titles.count)
+        let isAverageLayout = delegate?.config.isTitleAverageLayout ?? false
+        var labelW: CGFloat = 0
+        if isAverageLayout {
+            labelW = frame.width / CGFloat(titles.count)
+        }
+        let titleMargin: CGFloat = delegate?.config.titleMargin ?? 20
+        
         let labelH : CGFloat = frame.height - kScrollLineH
         let labelY : CGFloat = 0.0
         
@@ -113,10 +125,16 @@ extension XYSegmentTitleView{
             label.sizeToFit()
             
             // 3. 设置frame
-            let labelW : CGFloat = label.bounds.width + 20
-            let labelX : CGFloat = totoalWidth
-            totoalWidth += labelW
-            label.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+            if isAverageLayout {
+                let labelX : CGFloat = CGFloat(index) * labelW
+                label.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+            }else{
+                let labelW : CGFloat = label.bounds.width + titleMargin
+                let labelX : CGFloat = totoalWidth
+                totoalWidth += labelW
+                label.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+            }
+            
             
             // 4.添加
             scrollView.addSubview(label)

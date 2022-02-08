@@ -18,7 +18,12 @@ open class XYSegmentViewConfig: NSObject {
     
     /// titleView 高度
     var titleViewFrame: CGRect = CGRect(x: 0, y: 0, width: kScreenW, height: 44)
+    /// 快速设置 titleItem 为简单标题的 item
     var titles: [String] = ["没有","设置","分页","!"]
+    /// 两个 title 之间间距, 则以某个 title 为参考单边为 10.
+    var titleMargin: CGFloat = 20
+    /// 设置 title 在 titleView 中布局是否为均分宽度，默认 false
+    var isTitleAverageLayout: Bool = false
     
     
     // MARK: - content 相关

@@ -22,7 +22,7 @@ class ViewController: UIViewController {
         
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
-        //let titles = ["推荐","游戏","娱乐","趣玩"];
+//        let titles = ["推荐","游戏","娱乐","趣玩"];
         let titles = ["推荐","游戏","娱乐","趣玩","推荐333","游戏333游戏哈哈","娱乐0","趣玩1","推荐2313","游戏993js","娱乐jjddz","趣玩qnmb"];
         
         // content
@@ -39,8 +39,14 @@ class ViewController: UIViewController {
         
         let config = XYSegmentViewConfig()
         config.frame = segFrame
+        
         config.titleViewFrame = titleFrame
         config.titles = titles
+        if titles.count <= 4 {
+            config.isTitleAverageLayout = true
+        }
+        config.titleMargin = 30
+        
         config.containerViewFrame = contentFrame
         config.contentVCs = contentVcs
         config.superVC = self
