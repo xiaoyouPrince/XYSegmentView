@@ -8,6 +8,7 @@
 import UIKit
 
 var theVC = UIViewController()
+let titleViewH: CGFloat = 44
 
 class ViewController: UIViewController {
 
@@ -16,10 +17,36 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         theVC = self
         
-        let seg = XYSegmentView(frame: CGRect(x: 0, y: kNavBarH + 44, width: kScreenW, height: 500))
+        // segmentView
+        let segFrame = CGRect(x: 0, y: kNavHeight, width: kScreenW, height: kScreenH - kNavHeight)
+        
+        // title
+        let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
+        let titles = ["推荐","游戏","娱乐","趣玩"];
+        
+        // content
+        let contentY : CGFloat = titleViewH
+        let contentH = segFrame.height - contentY
+        let contentW = segFrame.width
+        let contentFrame = CGRect(x: 0, y: contentY, width: contentW, height: contentH)
+        
+        // 2.创建对应的contentView
+        var contentVcs = [UIViewController]()
+        contentVcs.append(CommonViewController())
+        contentVcs.append(CommonViewController())
+        contentVcs.append(CommonViewController())
+        contentVcs.append(CommonViewController())
+        
+        let config = XYSegmentViewConfig()
+        config.frame = segFrame
+        config.titleViewFrame = titleFrame
+        config.titles = titles
+        config.containerViewFrame = contentFrame
+        config.contentVCs = contentVcs
+        config.superVC = self
+        
+        let seg = XYSegmentView(config: config)
         view.addSubview(seg)
     }
-
-
 }
 

@@ -5,13 +5,19 @@
 //  Created by 渠晓友 on 2022/2/7.
 //
 
+/// TODO & FEATURES
+/// 1. 提供一个 XYSegmentView 级别的公共存储。让 content 随时可以知道自己是哪个 item <最好是协议，默认实现的那种, 实现协议的部分可以直接使用>。 自定义的 title/ content 都可以直接基于协议实现，提供自定义说明指导
+/// 2. 提供一个 XYSegmentView 级别的公共配置。外界使用者可以直接配置配置类即可轻松实现
+/// 3. 代理的实现。针对页面跳转、滑动、跨页点击跳转都通过代理方便监听各种事件
+/// 4. 丰富的自定义实现Demo: 微博、智联招聘、老虎证券、亲宝宝、咕咚运动
+
 import UIKit
 
 // MARK:-一些常量
 
 func navHeight() -> CGFloat {
     if #available(iOS 13.0, *) {
-        return UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame.height ?? 20
+        return UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame.height ?? UIApplication.shared.statusBarFrame.height
     } else {
         return UIApplication.shared.statusBarFrame.height
     }

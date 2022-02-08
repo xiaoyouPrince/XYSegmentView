@@ -7,21 +7,22 @@
 
 import UIKit
 
-let titleViewH: CGFloat = 44
-
-class XYSegmentView: UIView {
+open class XYSegmentView: UIView {
+    
+    var config: XYSegmentViewConfig = XYSegmentViewConfig()
+    
     // MARK: - 懒加载pagetitleView
     lazy var pageTitleView : XYSegmentTitleView = { [weak self] in
         
-        let titleFrame = CGRect(x: 0, y: 0, width: kScreenW, height: titleViewH)
-        let titles = ["推荐","游戏","娱乐","趣玩"];
+        let titleFrame = config.titleViewFrame
+        let titles = config.titles
         
         // 创建对应的titleView
         let titleView = XYSegmentTitleView.init(frame: titleFrame, titles: titles)
         titleView.backgroundColor = UIColor.clear
         
         // 成为代理
-        titleView.delegate = self  //因为在titleView中已经进行 ？ 处理了，所以这里不写 ？ 否则代理设置不成功
+        titleView.delegate = self
         
         return titleView
         
@@ -30,38 +31,29 @@ class XYSegmentView: UIView {
     // MARK:-懒加载一个pageContentView
     lazy var pageContentView : XYSegmentContainerView = { [weak self] in
         
-        // 1.确定frame
-        let contentY : CGFloat = titleViewH
-        let contentH = (self?.bounds.height ?? kScreenH) - contentY
-        let contentW = (self?.bounds.width ?? kScreenW)
-        let contentFrame = CGRect(x: 0, y: contentY, width: contentW, height: contentH)
+        let contentFrame = config.containerViewFrame
+        let contentVcs = config.contentVCs
+        let parentVC = config.superVC
         
-        // 2.创建对应的contentView
-        var contentVcs = [UIViewController]()
-        
-        // 2.1 第一个是推荐
-        contentVcs.append(CommonViewController())
-        contentVcs.append(CommonViewController())
-        contentVcs.append(CommonViewController())
-        contentVcs.append(CommonViewController())
-        
-        let contentView = XYSegmentContainerView(frame: contentFrame, childVcs:contentVcs , parentVc: theVC)
+        let contentView = XYSegmentContainerView(frame: contentFrame, childVcs:contentVcs , parentVc: parentVC!)
         contentView.backgroundColor = UIColor.red
         contentView.delegate = self
         
         return contentView
-        
     }()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    /// 指定初始化器
+    /// - Parameter config: 指定设置类
+    init(config: XYSegmentViewConfig) {
+        super.init(frame: config.frame)
+        self.config = config
         
         self.backgroundColor = .groupTableViewBackground
         addSubview(pageTitleView)
         addSubview(pageContentView)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
