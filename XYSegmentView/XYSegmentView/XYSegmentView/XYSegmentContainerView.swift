@@ -25,6 +25,15 @@ class XYSegmentContainerView: UIView {
     weak var delegate : XYSegmentContainerViewDelegate?{
         didSet{
             collectionView.isScrollEnabled = delegate!.config.contentScrollEnable
+            
+            for vc in childVcs {
+                if vc is XYSegmentConfigProtocol, let theVC = vc as? XYSegmentConfigProtocol {
+                    theVC.config = delegate!.config
+                }
+            }
+            
+//            collectionView.reloadData()
+            setupUI()
         }
     }
     fileprivate var isForbidScrollDelegate : Bool = false
@@ -64,7 +73,7 @@ class XYSegmentContainerView: UIView {
         super.init(frame:frame)
         
         // MARK:-创建UI
-        setupUI()
+//        setupUI()
     }
     
     required init?(coder aDecoder: NSCoder) {

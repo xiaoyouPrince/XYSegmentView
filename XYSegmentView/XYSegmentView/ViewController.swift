@@ -52,6 +52,8 @@ class ViewController: UIViewController {
         config.contentVCs = contentVcs
         config.superVC = self
         
+        config.userInfo = ["type": "demo"] // 自定义一个用户指定信息
+        
         let seg = XYSegmentView(config: config)
         view.addSubview(seg)
     }

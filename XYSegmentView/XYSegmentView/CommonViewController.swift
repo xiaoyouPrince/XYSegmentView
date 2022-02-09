@@ -29,15 +29,30 @@ class CommonViewController: UIViewController {
         super.viewWillAppear(animated)
         
         tableView.frame = view.bounds
+        
+//        print("当期ContentVc.index = \(currentSegmentIndex)")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        print("当期ContentVc.index = \(currentSegmentIndex)")
+        
+        print("基础信息 = \(userInfo)")
     }
 
 }
+
+extension CommonViewController: XYSegmentConfigProtocol {}
 
 
 extension CommonViewController: UITableViewDelegate, UITableViewDataSource{
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return Int(count)
+        
+        if userInfo.isEmpty {
+            return Int(count)
+        }
         return demoTitles.count
     }
     
@@ -48,8 +63,11 @@ extension CommonViewController: UITableViewDelegate, UITableViewDataSource{
             cell?.accessoryType = .disclosureIndicator
         }
         
-        //cell?.textLabel?.text = "第 \(indexPath.row) 个"
-        cell?.textLabel?.text = demoTitles[indexPath.row]
+        if userInfo.isEmpty {
+            cell?.textLabel?.text = "第 \(indexPath.row) 个"
+        }else{
+            cell?.textLabel?.text = demoTitles[indexPath.row]
+        }
         
         return cell!
     }
@@ -57,7 +75,10 @@ extension CommonViewController: UITableViewDelegate, UITableViewDataSource{
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         tableView.deselectRow(at: indexPath, animated: true)
-        let detailVC = DemoViewController()
-        navigationController?.pushViewController(detailVC, animated: true)
+        
+        if !userInfo.isEmpty {
+            let detailVC = DemoViewController()
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
     }
 }

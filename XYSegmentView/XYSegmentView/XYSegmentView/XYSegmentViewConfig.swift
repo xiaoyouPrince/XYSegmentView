@@ -47,6 +47,12 @@ open class XYSegmentViewConfig: NSObject {
     ///
     /// - 当前版本必须要赋值
     var superVC: UIViewController!
+    
+    /// 用户自定义的扩展信息
+    ///
+    /// - 比如一些 XYSegmentView 组件内全局通用的数据信息
+    /// - 比如埋点时候。最顶层 view 要埋一些基础配置的参数
+    var userInfo: [String: Any] = [:]
 }
 
 class vc: UIViewController {
