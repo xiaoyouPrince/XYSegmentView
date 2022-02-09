@@ -9,7 +9,7 @@ import UIKit
 
 private let cellID : String = "CellID"
 
-protocol XYSegmentContainerViewDelegate : AnyObject {
+protocol XYSegmentContainerViewDelegate : XYSegmentConfigProtocol {
     
     func pageContentView(_ contentView : XYSegmentContainerView, progress : CGFloat, sourceIndex : Int, targetIndex : Int)
 
@@ -22,7 +22,11 @@ class XYSegmentContainerView: UIView {
     fileprivate var childVcs : [UIViewController]
     fileprivate weak var parentVc : UIViewController? //防止强引用导致循环引用
     fileprivate var startOffsetX : CGFloat = 0;
-    weak var delegate : XYSegmentContainerViewDelegate?
+    weak var delegate : XYSegmentContainerViewDelegate?{
+        didSet{
+            collectionView.isScrollEnabled = delegate!.config.contentScrollEnable
+        }
+    }
     fileprivate var isForbidScrollDelegate : Bool = false
     
     // MARK:-闭包加载collectionView -- 闭包内要对self进行弱化引用，防止循环引用

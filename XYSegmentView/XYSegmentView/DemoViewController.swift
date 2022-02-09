@@ -1,29 +1,27 @@
 //
-//  ViewController.swift
+//  DemoViewController.swift
 //  XYSegmentView
 //
-//  Created by 渠晓友 on 2022/2/6.
+//  Created by 渠晓友 on 2022/2/9.
 //
+
+/// 这是一个 Demo 基类、用于展示所有的使用示例
 
 import UIKit
 
-var theVC = UIViewController()
-let titleViewH: CGFloat = 44
-
-class ViewController: UIViewController {
+class DemoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        title = "XYSegmentView"
-        theVC = self
-        
+        view.backgroundColor = .white
+
         // segmentView
         let segFrame = CGRect(x: 0, y: kNavHeight, width: kScreenW, height: kScreenH - kNavHeight)
         
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
-        let titles = ["推荐","游戏","娱乐","趣玩"];
+//        let titles = ["推荐","游戏","娱乐","趣玩"];
+        let titles = ["推荐","游戏","娱乐","趣玩","推荐333","游戏333游戏哈哈","娱乐0","趣玩1","推荐2313","游戏993js","娱乐jjddz","趣玩qnmb"];
         
         // content
         let contentY : CGFloat = titleViewH
@@ -55,5 +53,5 @@ class ViewController: UIViewController {
         let seg = XYSegmentView(config: config)
         view.addSubview(seg)
     }
-}
 
+}

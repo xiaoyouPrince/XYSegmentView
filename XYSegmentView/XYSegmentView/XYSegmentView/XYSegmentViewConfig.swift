@@ -12,16 +12,25 @@ import UIKit
 
 open class XYSegmentViewConfig: NSObject {
     
+    /// 设置XYSegmentView整体的 frame
+    ///
+    /// - 子视图的 frame 设置应匹配整体  frame
     var frame: CGRect = CGRect(x: 0, y: kNavHeight, width: kScreenW, height: kScreenH - kNavHeight - kTabSafeH)
+    
+    /// container 容器内容是否可以横向滑动切换 content
+    var contentScrollEnable: Bool = true
     
     // MARK: - title 相关
     
     /// titleView 高度
     var titleViewFrame: CGRect = CGRect(x: 0, y: 0, width: kScreenW, height: 44)
+    
     /// 快速设置 titleItem 为简单标题的 item
     var titles: [String] = ["没有","设置","分页","!"]
+    
     /// 两个 title 之间间距, 则以某个 title 为参考单边为 10.
     var titleMargin: CGFloat = 20
+    
     /// 设置 title 在 titleView 中布局是否为均分宽度，默认 false
     var isTitleAverageLayout: Bool = false
     
@@ -30,7 +39,10 @@ open class XYSegmentViewConfig: NSObject {
     
     /// 默认的内容容器的 frame
     var containerViewFrame: CGRect = CGRect(x: 0, y: 44, width: kScreenW, height: kScreenH - 44)
+    
+    /// 内容VCs， 数组个数必须和 titles.count 相同
     var contentVCs: [UIViewController] = [vc(),vc(),vc(),vc()]
+    
     /// segmentView 要加载到的 VC。
     ///
     /// - 当前版本必须要赋值

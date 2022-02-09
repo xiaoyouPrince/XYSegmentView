@@ -9,7 +9,7 @@ import UIKit
 
 open class XYSegmentView: UIView {
     
-    var config: XYSegmentViewConfig = XYSegmentViewConfig()
+    public var config: XYSegmentViewConfig = XYSegmentViewConfig()
     
     // MARK: - 懒加载pagetitleView
     lazy var pageTitleView : XYSegmentTitleView = { [weak self] in
