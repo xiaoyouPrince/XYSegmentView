@@ -55,3 +55,5 @@ class DemoViewController: UIViewController {
     }
 
 }
+
+extension DemoViewController: XYSegmentConfigProtocol{}

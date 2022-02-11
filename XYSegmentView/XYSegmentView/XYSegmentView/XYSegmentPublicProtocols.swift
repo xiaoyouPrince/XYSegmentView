@@ -5,6 +5,9 @@
 //  Created by 渠晓友 on 2022/2/8.
 //
 
+/// 滑块协议
+/// 活动类型 【平滑 / 圆点到另一个圆点，过程中会变长 / 背景滑块】
+
 import UIKit
 
 fileprivate struct AssociatedKeys {
@@ -37,12 +40,53 @@ extension XYSegmentConfigProtocol {
         if self is UIViewController {
             return config.contentVCs.firstIndex(of: self as! UIViewController) ?? -1
         }
+        
+        if self is UIView & XYSegmentViewTitleItemProtocol,
+        let item = self as? UIView {
+            return item.tag
+        }
         return -1
     }
     
     /// 获取全局用户自定义扩展的信息
     var userInfo: [String: Any] {
         return config.userInfo
+    }
+}
+
+
+/// TitleView 协议，定义了 TitleView 的基本操作
+public protocol XYSegmentViewTitleItemProtocol: AnyObject {
+    
+    /// 获取 item 的标题
+    var title: String { get }
+    
+    /// 设置其普通状态
+    func setNormalState()
+    
+    /// 设置其完全被选中状态
+    func setSelectedState()
+    
+    /// 设置状态进度，即 normalState 和 selectedState 之间的过程状态，
+    /// - 不实现则只有两种状态
+    func setState(with progress: CGFloat)
+    
+}
+
+extension XYSegmentViewTitleItemProtocol {
+    var title: String { "" }
+    func setNormalState() { }
+    func setSelectedState() { }
+    func setState(with progress: CGFloat) { /*不实现就直接使用两级状态*/}
+    func setProgress(progress: CGFloat) {
+        if progress <= 0.01 {
+            setNormalState()
+        }else if progress >= 0.99 {
+            setSelectedState()
+        }else{
+            // 用户自己实现
+            setState(with: progress)
+        }
     }
 }
 

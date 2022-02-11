@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		B40DDEB427B38F2E007A71CD /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40DDEB327B38F2E007A71CD /* DemoViewController.swift */; };
+		B40DDEB627B5563A007A71CD /* XYSegmentTitleView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40DDEB527B5563A007A71CD /* XYSegmentTitleView2.swift */; };
 		B456FDF127AFA56300A822CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456FDF027AFA56300A822CB /* AppDelegate.swift */; };
 		B456FDF327AFA56300A822CB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456FDF227AFA56300A822CB /* SceneDelegate.swift */; };
 		B456FDF527AFA56300A822CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456FDF427AFA56300A822CB /* ViewController.swift */; };
@@ -25,6 +26,7 @@
 
 /* Begin PBXFileReference section */
 		B40DDEB327B38F2E007A71CD /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
+		B40DDEB527B5563A007A71CD /* XYSegmentTitleView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentTitleView2.swift; sourceTree = "<group>"; };
 		B456FDED27AFA56300A822CB /* XYSegmentView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XYSegmentView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B456FDF027AFA56300A822CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B456FDF227AFA56300A822CB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 			children = (
 				B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */,
 				B456FE0527AFA5E200A822CB /* XYSegmentView.swift */,
+				B40DDEB527B5563A007A71CD /* XYSegmentTitleView2.swift */,
 				B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */,
 				B47EE9AA27B1083C00ED1982 /* XYSegmentContainerView.swift */,
 				B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */,
@@ -181,6 +184,7 @@
 				B47EE9AD27B1097600ED1982 /* CommonViewController.swift in Sources */,
 				B456FDF127AFA56300A822CB /* AppDelegate.swift in Sources */,
 				B456FDF327AFA56300A822CB /* SceneDelegate.swift in Sources */,
+				B40DDEB627B5563A007A71CD /* XYSegmentTitleView2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

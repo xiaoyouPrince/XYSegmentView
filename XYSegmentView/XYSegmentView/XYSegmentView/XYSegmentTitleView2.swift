@@ -1,29 +1,59 @@
 //
-//  XYSegmentTitleView.swift
+//  XYSegmentTitleView2.swift
 //  XYSegmentView
 //
-//  Created by 渠晓友 on 2022/2/7.
+//  Created by 渠晓友 on 2022/2/10.
 //
 
 import UIKit
 
-// MARK: - 定义自己代理
-protocol XYSegmentTitleViewDelegate : XYSegmentConfigProtocol {
-    
-    // 这里只是方法的定义 --selectIndex index :分别是内部和外部属性
-    func pageTitleView(titleView : XYSegmentTitleView , selectIndex index : Int)
-    
-}
 
 // MARK: - 定义常量
 private let kScrollLineH : CGFloat = 2
 private let kNormalColor : (CGFloat, CGFloat, CGFloat) = (85, 85, 85)
 private let kSelectColor : (CGFloat, CGFloat, CGFloat) = (255, 128, 0)
 
-class XYSegmentTitleView: UIView {
+
+class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
+    
+    func setNormalState() {
+        if let label = subviews.first as? UILabel {
+            label.textColor = .red
+        }
+    }
+    
+    func setSelectedState() {
+        if let label = subviews.first as? UILabel {
+            label.textColor = .green
+        }
+    }
+    
+    func setState(with progress: CGFloat) {
+        x_setProgress(progress: progress)
+    }
+    
+    /// 从方法由于是分类中有实现，直接走的分类实现，这里走不到
+    /// - Parameter progress: 进度
+    func x_setProgress(progress: CGFloat) {
+        
+        print("progress = \(progress)")
+        
+        if let label = subviews.first as? UILabel {
+            
+            let colorDelta = (kSelectColor.0 - kNormalColor.0, kSelectColor.1 - kNormalColor.1, kSelectColor.2 - kNormalColor.2)
+            
+//            label.textColor = UIColor(r: kSelectColor.0 - colorDelta.0 * progress, g: kSelectColor.1 - colorDelta.1 * progress, b: kSelectColor.2 - colorDelta.2 * progress)
+            
+            label.textColor = UIColor(r: kNormalColor.0 + colorDelta.0 * progress, g: kNormalColor.1 + colorDelta.1 * progress, b: kNormalColor.2 + colorDelta.2 * progress)
+        }
+    }
+}
+
+class XYSegmentTitleView2: UIView {
     
     // MARK: - 自定义属性
     fileprivate var titles : [String]
+    fileprivate var titleItems : [XYSegmentViewTitleItemProtocol & UIView] = [TitleItem]()
     fileprivate var titleLabels : [UILabel] = [UILabel]()
     fileprivate var currentIndex : Int = 0 // 设置默认的当前下标为0
     weak var delegate : XYSegmentTitleViewDelegate?{
@@ -75,7 +105,7 @@ class XYSegmentTitleView: UIView {
 }
 
 // MARK: - 设置UI
-extension XYSegmentTitleView{
+extension XYSegmentTitleView2{
     
     
     fileprivate func setupUI(){
@@ -111,9 +141,13 @@ extension XYSegmentTitleView{
         var totoalWidth : CGFloat = 0
         for (index,title) in titles.enumerated(){
             
-            // 1.创建Label
-            let label = UILabel()
+            let item = TitleItem()
+            item.tag = index
             
+            
+//            // 1.创建Label
+            let label = UILabel()
+
             // 2.设置对应的属性
             label.text = title
             label.font = UIFont.systemFont(ofSize: 16.0)
@@ -122,32 +156,39 @@ extension XYSegmentTitleView{
             label.textAlignment = .center
             label.sizeToFit()
             
+            item.addSubview(label)
+            
+
             // 3. 设置frame
             if isAverageLayout {
                 let labelX : CGFloat = CGFloat(index) * labelW
-                label.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+                item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+                label.frame = item.bounds
             }else{
                 let labelW : CGFloat = label.bounds.width + titleMargin
                 let labelX : CGFloat = totoalWidth
                 totoalWidth += labelW
-                label.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+                item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+                label.frame = item.bounds
             }
-            
-            
+
+
             // 4.添加
-            scrollView.addSubview(label)
-            
+            scrollView.addSubview(item)
+
             // 5.添加到Label的数组中
-            titleLabels.append(label)
-            
+//            titleLabels.append(label)
+            titleItems.append(item)
+            item.setNormalState()
+
             // 6.给Label添加手势
-            label.isUserInteractionEnabled = true
+//            label.isUserInteractionEnabled = true
             let tapGes = UITapGestureRecognizer(target: self, action: #selector(self.titleLabelClick(tapGes:)))
-            label.addGestureRecognizer(tapGes)
+            item.addGestureRecognizer(tapGes)
             
         }
         
-        scrollView.contentSize = CGSize(width: titleLabels.last!.frame.maxX, height: 0)
+        scrollView.contentSize = CGSize(width: titleItems.last!.frame.maxX, height: 0)
         
     }
     // MARK: - 设置底线 和 可以滚动的线
@@ -159,8 +200,8 @@ extension XYSegmentTitleView{
         bottomLine.frame = CGRect(x: 0, y: frame.height - bottomLineH , width: frame.width, height: bottomLineH)
         addSubview(bottomLine)
         
-        guard let label = titleLabels.first else {return}
-        label.textColor = UIColor(r: kSelectColor.0, g: kSelectColor.1, b: kSelectColor.2)
+        guard let label = titleItems.first else {return}
+        label.setSelectedState()
         scrollLine.frame = CGRect(x: label.bounds.origin.x, y: label.frame.origin.y+label.frame.height, width: label.frame.width, height: kScrollLineH)
             scrollView.addSubview(scrollLine)
 
@@ -169,12 +210,12 @@ extension XYSegmentTitleView{
 
 
 // MARK: - 监听Label的点击 -- 必须使用@objc
-extension XYSegmentTitleView{
+extension XYSegmentTitleView2{
     
     @objc fileprivate func titleLabelClick(tapGes : UITapGestureRecognizer){
         
         // 1.取到当前的label
-        guard let currentLabel = tapGes.view as? UILabel else {
+        guard let currentLabel = tapGes.view as? TitleItem else {
             return
         }
         
@@ -182,12 +223,12 @@ extension XYSegmentTitleView{
         if currentLabel.tag == currentIndex { return }
         
         // 2.获取之前的label
-        let oldLabel = titleLabels[currentIndex]
+        let oldLabel = titleItems[currentIndex]
         
         
-        // 3.设置文字颜色改变
-        currentLabel.textColor = UIColor(r: kSelectColor.0, g: kSelectColor.1, b: kSelectColor.2)
-        oldLabel.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
+        // 3.设置 source / target 状态
+        currentLabel.setProgress(progress: 1.0)
+        oldLabel.setProgress(progress: 0.0)
 
         // 4.保存新的当前下边值
         currentIndex = currentLabel.tag
@@ -204,7 +245,7 @@ extension XYSegmentTitleView{
         }
         
         // 6.通知代理做事情
-        delegate?.pageTitleView(titleView: self, selectIndex: currentIndex)
+        delegate?.pageTitleView(titleView: XYSegmentTitleView(frame: .zero, titles: ["String"]), selectIndex: currentIndex)
         
     }
     
@@ -228,15 +269,14 @@ extension XYSegmentTitleView{
     
 }
 
-
 // MARK: - 暴露给外界的方法
-extension XYSegmentTitleView{
+extension XYSegmentTitleView2{
     
     func setTitleWithProgress( progress : CGFloat, sourceIndex : Int, targetIndex : Int) {
         
         // 1.取出sourceLabel/targetLabel
-        let sourceLabel = titleLabels[sourceIndex]
-        let targetLabel = titleLabels[targetIndex]
+        let sourceLabel = titleItems[sourceIndex]
+        let targetLabel = titleItems[targetIndex]
         
         // 2.处理滑块的逻辑
         let moveTotalX = targetLabel.frame.origin.x - sourceLabel.frame.origin.x
@@ -247,15 +287,9 @@ extension XYSegmentTitleView{
         let lineWidth = deltaWidth + sourceLabel.bounds.width
         scrollLine.frame.size.width = lineWidth
         
-        // 3.颜色的渐变(复杂)
-        // 3.1.取出变化的范围
-        let colorDelta = (kSelectColor.0 - kNormalColor.0, kSelectColor.1 - kNormalColor.1, kSelectColor.2 - kNormalColor.2)
-        
-        // 3.2.变化sourceLabel
-        sourceLabel.textColor = UIColor(r: kSelectColor.0 - colorDelta.0 * progress, g: kSelectColor.1 - colorDelta.1 * progress, b: kSelectColor.2 - colorDelta.2 * progress)
-        
-        // 3.2.变化targetLabel
-        targetLabel.textColor = UIColor(r: kNormalColor.0 + colorDelta.0 * progress, g: kNormalColor.1 + colorDelta.1 * progress, b: kNormalColor.2 + colorDelta.2 * progress)
+        // 3. 处理 item 滑动进度
+        sourceLabel.setProgress(progress: 1 - progress)
+        targetLabel.setProgress(progress: progress)
         
         // 4.记录最新的index
         currentIndex = targetIndex
@@ -264,8 +298,5 @@ extension XYSegmentTitleView{
             // print("滑动完成------")
             scrollCurrentTitleCenter()
         }
-        
     }
-        
-    
 }

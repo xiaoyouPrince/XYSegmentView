@@ -9,7 +9,13 @@ import UIKit
 
 class CommonViewController: UIViewController {
     
-    let demoTitles: [String] = ["一行代码看效果"]
+    let demoTitles: [String] = [
+        "默认效果/一行代码",
+        "header 数据较少平分宽度",
+        "header 数据较少依次排开",
+        "header 多数据自适应宽度",
+        
+    ]
     let count = arc4random_uniform(15)
     lazy var tableView: UITableView = {
         let tableview = UITableView(frame: .zero, style: .plain)
@@ -78,6 +84,7 @@ extension CommonViewController: UITableViewDelegate, UITableViewDataSource{
         
         if !userInfo.isEmpty {
             let detailVC = DemoViewController()
+            detailVC.title = config.titles[currentSegmentIndex] + "DemoViewController"
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
