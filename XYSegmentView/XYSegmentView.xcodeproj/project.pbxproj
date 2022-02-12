@@ -16,6 +16,7 @@
 		B456FDFA27AFA56600A822CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B456FDF927AFA56600A822CB /* Assets.xcassets */; };
 		B456FDFD27AFA56600A822CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B456FDFB27AFA56600A822CB /* LaunchScreen.storyboard */; };
 		B456FE0627AFA5E200A822CB /* XYSegmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456FE0527AFA5E200A822CB /* XYSegmentView.swift */; };
+		B4671E0927B6713B00D20B30 /* DefalutDemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4671E0827B6713B00D20B30 /* DefalutDemoViewController.swift */; };
 		B47EE9A927B0E00100ED1982 /* XYSegmentFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE9A827B0E00100ED1982 /* XYSegmentFuncs.swift */; };
 		B47EE9AB27B1083C00ED1982 /* XYSegmentContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE9AA27B1083C00ED1982 /* XYSegmentContainerView.swift */; };
 		B47EE9AD27B1097600ED1982 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE9AC27B1097600ED1982 /* CommonViewController.swift */; };
@@ -36,6 +37,7 @@
 		B456FDFC27AFA56600A822CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B456FDFE27AFA56600A822CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B456FE0527AFA5E200A822CB /* XYSegmentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentView.swift; sourceTree = "<group>"; };
+		B4671E0827B6713B00D20B30 /* DefalutDemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefalutDemoViewController.swift; sourceTree = "<group>"; };
 		B47EE9A827B0E00100ED1982 /* XYSegmentFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentFuncs.swift; sourceTree = "<group>"; };
 		B47EE9AA27B1083C00ED1982 /* XYSegmentContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentContainerView.swift; sourceTree = "<group>"; };
 		B47EE9AC27B1097600ED1982 /* CommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				B456FDF427AFA56300A822CB /* ViewController.swift */,
 				B40DDEB327B38F2E007A71CD /* DemoViewController.swift */,
 				B47EE9AC27B1097600ED1982 /* CommonViewController.swift */,
+				B4671E0827B6713B00D20B30 /* DefalutDemoViewController.swift */,
 				B456FDF627AFA56300A822CB /* Main.storyboard */,
 				B456FDF927AFA56600A822CB /* Assets.xcassets */,
 				B456FDFB27AFA56600A822CB /* LaunchScreen.storyboard */,
@@ -175,6 +178,7 @@
 			files = (
 				B47EE9A927B0E00100ED1982 /* XYSegmentFuncs.swift in Sources */,
 				B4EBE9D327B2A10B007BCEBD /* XYSegmentPublicProtocols.swift in Sources */,
+				B4671E0927B6713B00D20B30 /* DefalutDemoViewController.swift in Sources */,
 				B456FDF527AFA56300A822CB /* ViewController.swift in Sources */,
 				B47EE9AB27B1083C00ED1982 /* XYSegmentContainerView.swift in Sources */,
 				B4EBE9D127B162EB007BCEBD /* XYSegmentViewConfig.swift in Sources */,

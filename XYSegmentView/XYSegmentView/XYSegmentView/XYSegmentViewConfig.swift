@@ -10,6 +10,12 @@
 
 import UIKit
 
+public enum ScrollLineType {
+    case `default`
+    case line
+    case dot
+}
+
 open class XYSegmentViewConfig: NSObject {
     
     /// 设置XYSegmentView整体的 frame
@@ -34,6 +40,9 @@ open class XYSegmentViewConfig: NSObject {
     /// 设置 title 在 titleView 中布局是否为均分宽度，默认 false
     var isTitleAverageLayout: Bool = false
     
+    
+    // MARK: - title 底部滑块 相关
+    var scrollLineType: ScrollLineType = .default
     
     // MARK: - content 相关
     

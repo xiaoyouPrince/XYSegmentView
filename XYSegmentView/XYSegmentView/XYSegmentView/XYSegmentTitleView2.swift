@@ -202,8 +202,15 @@ extension XYSegmentTitleView2{
         
         guard let label = titleItems.first else {return}
         label.setSelectedState()
-        scrollLine.frame = CGRect(x: label.bounds.origin.x, y: label.frame.origin.y+label.frame.height, width: label.frame.width, height: kScrollLineH)
-            scrollView.addSubview(scrollLine)
+        
+        if let lineType = delegate?.config.scrollLineType, lineType == .dot{
+            scrollLine.frame = CGRect(x: label.center.x, y: label.frame.origin.y+label.frame.height, width: kScrollLineH, height: kScrollLineH)
+                scrollView.addSubview(scrollLine)
+        }else{
+            scrollLine.frame = CGRect(x: label.bounds.origin.x, y: label.frame.origin.y+label.frame.height, width: label.frame.width, height: kScrollLineH)
+                scrollView.addSubview(scrollLine)
+        }
+        
 
     }
 }
@@ -234,8 +241,9 @@ extension XYSegmentTitleView2{
         currentIndex = currentLabel.tag
         
         // 5.滚动条的滚动
-        let scrollLinePosition : CGFloat =  currentLabel.frame.origin.x
-        let scrollLineWidth : CGFloat =  currentLabel.frame.size.width
+        
+        let scrollLinePosition : CGFloat = currentLabel.center.x //currentLabel.frame.origin.x
+        let scrollLineWidth : CGFloat =  kScrollLineH//currentLabel.frame.size.width
         UIView.animate(withDuration: 0.15) {
             self.scrollLine.frame.origin.x = scrollLinePosition
             self.scrollLine.frame.size.width = scrollLineWidth
@@ -250,6 +258,10 @@ extension XYSegmentTitleView2{
     }
     
     fileprivate func scrollCurrentTitleCenter() {
+        
+        if self.scrollView.bounds.width >= self.scrollView.contentSize.width {
+            return
+        }
         
         var offsetX: CGFloat = 0
         if self.scrollLine.center.x < self.scrollView.center.x {

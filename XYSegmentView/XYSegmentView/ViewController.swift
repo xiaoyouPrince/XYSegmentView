@@ -33,8 +33,12 @@ class ViewController: UIViewController {
         
         // 2.创建对应的contentView
         var contentVcs = [UIViewController]()
-        for _ in titles {
-            contentVcs.append(CommonViewController())
+        for (index, _) in titles.enumerated() {
+            if index == 0 {
+                contentVcs.append(DefalutDemoViewController())
+            }else{
+                contentVcs.append(CommonViewController())
+            }
         }
         
         let config = XYSegmentViewConfig()
