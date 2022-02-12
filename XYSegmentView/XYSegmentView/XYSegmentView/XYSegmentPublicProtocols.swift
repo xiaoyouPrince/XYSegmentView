@@ -91,6 +91,15 @@ extension XYSegmentViewTitleItemProtocol {
 }
 
 /// TitleView 协议，定义了 TitleView 的基本操作
+public protocol XYSegmentViewSliderProtocol: AnyObject {
+    
+}
+
+extension XYSegmentViewSliderProtocol {
+    
+}
+
+/// TitleView 协议，定义了 TitleView 的基本操作
 public protocol XYSegmentTitleViewProtocol: AnyObject {
     
 }

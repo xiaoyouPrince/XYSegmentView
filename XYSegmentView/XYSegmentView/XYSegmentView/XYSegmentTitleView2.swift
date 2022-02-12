@@ -36,7 +36,7 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
     /// - Parameter progress: 进度
     func x_setProgress(progress: CGFloat) {
         
-        print("progress = \(progress)")
+//        print("progress = \(progress)")
         
         if let label = subviews.first as? UILabel {
             
@@ -203,15 +203,81 @@ extension XYSegmentTitleView2{
         guard let label = titleItems.first else {return}
         label.setSelectedState()
         
-        if let lineType = delegate?.config.scrollLineType, lineType == .dot{
-            scrollLine.frame = CGRect(x: label.center.x, y: label.frame.origin.y+label.frame.height, width: kScrollLineH, height: kScrollLineH)
-                scrollView.addSubview(scrollLine)
-        }else{
-            scrollLine.frame = CGRect(x: label.bounds.origin.x, y: label.frame.origin.y+label.frame.height, width: label.frame.width, height: kScrollLineH)
-                scrollView.addSubview(scrollLine)
+        doSlider { type in
+            switch type {
+            case .default:
+                scrollLine.frame = CGRect(x: label.bounds.origin.x, y: label.frame.origin.y+label.frame.height, width: label.frame.width, height: kScrollLineH)
+            case .line:
+                fatalError("not implemented")
+            case .dot:
+                scrollLine.frame = CGRect(x: label.center.x, y: label.frame.origin.y+label.frame.height, width: kScrollLineH, height: kScrollLineH)
+            }
         }
         
+        scrollView.addSubview(scrollLine)
+    }
+}
 
+extension XYSegmentTitleView2 {
+    func doSlider(_ block: (ScrollLineType) -> ()) {
+        if let lineType = delegate?.config.scrollLineType {
+            block(lineType)
+        }else{
+            block(.default)
+        }
+    }
+    
+    func doSliderWithProgress( progress : CGFloat, sourceIndex : Int, targetIndex : Int) {
+        
+        // 1.取出sourceLabel/targetLabel
+        let sourceLabel = titleItems[sourceIndex]
+        let targetLabel = titleItems[targetIndex]
+        let moveTotalX = abs(targetLabel.center.x - sourceLabel.center.x)
+        if progress > 0.5 { // 后半段
+            if targetIndex > sourceIndex { // 左滑
+                let deltaX = moveTotalX * ((progress - 0.5) * 2)
+                scrollLine.frame.origin.x = sourceLabel.center.x - kScrollLineH / 2 + deltaX
+                
+                var lineWidth = moveTotalX * (1 - (progress - 0.5) * 2)
+                if lineWidth <= kScrollLineH {
+                    lineWidth = kScrollLineH
+                }
+                scrollLine.frame.size.width = lineWidth
+            }else{
+                var lineWidth = moveTotalX * (1 - (progress - 0.5) * 2)
+                if lineWidth <= kScrollLineH {
+                    lineWidth = kScrollLineH
+                }
+                scrollLine.frame.size.width = lineWidth
+                
+                /// 处理滑动过快情景下，在前半段中
+                /// 最后一帧位置没有同步到正确位置，就到下半段了
+                /// 手动修改到正确位置
+                if scrollLine.frame.origin.x != targetLabel.center.x - kScrollLineH / 2 {
+                    scrollLine.frame.origin.x = targetLabel.center.x - kScrollLineH / 2
+                }
+            }
+        }else{ // 前半段
+            if targetIndex > sourceIndex { // 左滑
+                var lineWidth = moveTotalX * progress * 2
+                if lineWidth <= kScrollLineH {
+                    lineWidth = kScrollLineH
+                }
+                scrollLine.frame.size.width = lineWidth
+            }else{
+                /// 在右滑动前半段，滑动过快会导致滑块.x 定位不准。
+                /// 原因是scrollViewDidScroll 回调每个 Runloop 回调一次，如果滑动过快，相邻两次loop回调中间已经prosess > 0.5 了，此时不会走到修改 x 的回调中
+                /// fix 在后半段中处理上半段位置 x 不对的情况
+                let deltaX = moveTotalX * progress * 2
+                scrollLine.frame.origin.x = sourceLabel.center.x - kScrollLineH / 2 - deltaX
+
+                var lineWidth = moveTotalX * progress * 2
+                if lineWidth <= kScrollLineH {
+                    lineWidth = kScrollLineH
+                }
+                scrollLine.frame.size.width = lineWidth
+            }
+        }
     }
 }
 
@@ -241,9 +307,21 @@ extension XYSegmentTitleView2{
         currentIndex = currentLabel.tag
         
         // 5.滚动条的滚动
-        
-        let scrollLinePosition : CGFloat = currentLabel.center.x //currentLabel.frame.origin.x
-        let scrollLineWidth : CGFloat =  kScrollLineH//currentLabel.frame.size.width
+        var scrollLinePosition : CGFloat = 0//currentLabel.frame.origin.x
+        var scrollLineWidth : CGFloat = 0//currentLabel.frame.size.width
+        doSlider { type in
+            switch type {
+            case .default:
+                scrollLinePosition = currentLabel.frame.origin.x
+                scrollLineWidth = currentLabel.frame.size.width
+            case .line:
+                fatalError("not implemented")
+            case .dot:
+                scrollLinePosition = currentLabel.center.x
+                scrollLineWidth = kScrollLineH
+            }
+        }
+
         UIView.animate(withDuration: 0.15) {
             self.scrollLine.frame.origin.x = scrollLinePosition
             self.scrollLine.frame.size.width = scrollLineWidth
@@ -290,14 +368,70 @@ extension XYSegmentTitleView2{
         let sourceLabel = titleItems[sourceIndex]
         let targetLabel = titleItems[targetIndex]
         
-        // 2.处理滑块的逻辑
-        let moveTotalX = targetLabel.frame.origin.x - sourceLabel.frame.origin.x
-        let moveX = moveTotalX * progress
-        scrollLine.frame.origin.x = sourceLabel.frame.origin.x + moveX
         
-        let deltaWidth = (targetLabel.bounds.width - sourceLabel.bounds.width) * progress
-        let lineWidth = deltaWidth + sourceLabel.bounds.width
-        scrollLine.frame.size.width = lineWidth
+        doSlider { type in
+            switch type {
+            case .default:
+                let moveTotalX = targetLabel.frame.origin.x - sourceLabel.frame.origin.x
+                let moveX = moveTotalX * progress
+                scrollLine.frame.origin.x = sourceLabel.frame.origin.x + moveX
+        
+                let deltaWidth = (targetLabel.bounds.width - sourceLabel.bounds.width) * progress
+                let lineWidth = deltaWidth + sourceLabel.bounds.width
+                scrollLine.frame.size.width = lineWidth
+            case .line:
+                fatalError("not implemented")
+            case .dot:
+                doSliderWithProgress(progress: progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
+            }
+        }
+        
+        // 2.处理滑块的逻辑
+//        let moveTotalX = targetLabel.frame.origin.x - sourceLabel.frame.origin.x
+//        let moveX = moveTotalX * progress
+//        scrollLine.frame.origin.x = sourceLabel.frame.origin.x + moveX
+//
+//        let deltaWidth = (targetLabel.bounds.width - sourceLabel.bounds.width) * progress
+//        let lineWidth = deltaWidth + sourceLabel.bounds.width
+//        scrollLine.frame.size.width = lineWidth
+        
+//        let moveTotalX = abs(targetLabel.center.x - sourceLabel.center.x)
+//        if progress >= 0.5 { // 后半段
+//            if targetIndex > sourceIndex { // 左滑
+//                let deltaX = moveTotalX * ((progress - 0.5) * 2)
+//                scrollLine.frame.origin.x = sourceLabel.center.x - kScrollLineH / 2 + deltaX
+//
+//                var lineWidth = moveTotalX * (1 - (progress - 0.5) * 2)
+//                if lineWidth <= kScrollLineH {
+//                    lineWidth = kScrollLineH
+//                }
+//                scrollLine.frame.size.width = lineWidth
+//            }else{
+//                var lineWidth = moveTotalX * (1 - (progress - 0.5) * 2)
+//                if lineWidth <= kScrollLineH {
+//                    lineWidth = kScrollLineH
+//                }
+//                scrollLine.frame.size.width = lineWidth
+//            }
+//        }else{ // 前半段
+//            if targetIndex > sourceIndex { // 左滑
+//                var lineWidth = moveTotalX * progress * 2
+//                if lineWidth <= kScrollLineH {
+//                    lineWidth = kScrollLineH
+//                }
+//                scrollLine.frame.size.width = lineWidth
+//            }else{
+//                let deltaX = moveTotalX * progress * 2
+//                scrollLine.frame.origin.x = sourceLabel.center.x - kScrollLineH / 2 - deltaX
+//
+//                var lineWidth = moveTotalX * progress * 2
+//                if lineWidth <= kScrollLineH {
+//                    lineWidth = kScrollLineH
+//                }
+//                scrollLine.frame.size.width = lineWidth
+//            }
+//        }
+        
         
         // 3. 处理 item 滑动进度
         sourceLabel.setProgress(progress: 1 - progress)
