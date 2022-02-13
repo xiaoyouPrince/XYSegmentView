@@ -52,9 +52,10 @@ class DefalutDemoViewController: UIViewController {
             "header 数据较少依次排开 - 自定间距",
             "header 多数据自适应宽度",
             "滑块 为条状且与 title 等宽度,跟随滑动",
+            "滑块 为条状,与 title 不等宽度,跟随滑动",
             "滑块 为条状且与 title 等宽度,不跟随滑动",
-            "滑块 为点状且切换有粘连效果",
-            "滑块 为点状且切换无粘连效果，不跟随滑动",
+            "滑块 为圆点状且切换有粘连效果",
+            "滑块 为圆点点状且切换无粘连效果，不跟随滑动",
             "滑块 指定宽高, 跟随滑动",
             "滑块 指定宽高, 跟随滑动, 有粘连效果",
             "滑块 指定宽高, 不跟随滑动",
@@ -102,11 +103,12 @@ class DefalutDemoViewController: UIViewController {
             }
             
             if index == 6 {
-                config.scrollLineType = .default
+                config.scrollLineInnerMargin = 20
             }
             
             if index == 7 {
-                config.scrollLineType = .dot
+                config.scrollLineInnerMargin = 10
+                config.scrollLineFollowSliding = false
             }
             
             if index == 8 {

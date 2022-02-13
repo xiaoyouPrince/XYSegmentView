@@ -201,7 +201,7 @@ extension XYSegmentTitleView2{
         doSlider { type in
             switch type {
             case .default:
-                scrollLine.frame = CGRect(x: label.bounds.origin.x, y: label.frame.origin.y+label.frame.height, width: label.frame.width, height: kScrollLineH)
+                scrollLine.frame = CGRect(x: label.bounds.origin.x + sliderInnerMargin, y: label.frame.origin.y+label.frame.height, width: label.frame.width - 2*sliderInnerMargin, height: kScrollLineH)
             case .line:
                 fatalError("not implemented")
             case .dot:
@@ -214,6 +214,23 @@ extension XYSegmentTitleView2{
 }
 
 extension XYSegmentTitleView2 {
+    
+    var sliderInnerMargin: CGFloat {
+        if let scrollLineInnerMargin = delegate?.config.scrollLineInnerMargin {
+            return scrollLineInnerMargin
+        }else{
+            return 0
+        }
+    }
+    
+    var sliderFollowSliding: Bool {
+        if let scrollLineFollowSliding = delegate?.config.scrollLineFollowSliding {
+            return scrollLineFollowSliding
+        }else{
+            return true
+        }
+    }
+    
     func doSlider(_ block: (ScrollLineType) -> ()) {
         if let lineType = delegate?.config.scrollLineType {
             block(lineType)
@@ -318,8 +335,8 @@ extension XYSegmentTitleView2{
         }
 
         UIView.animate(withDuration: 0.15) {
-            self.scrollLine.frame.origin.x = scrollLinePosition
-            self.scrollLine.frame.size.width = scrollLineWidth
+            self.scrollLine.frame.origin.x = scrollLinePosition + self.sliderInnerMargin
+            self.scrollLine.frame.size.width = scrollLineWidth - 2*self.sliderInnerMargin
         } completion: {_ in
             // 5.1 当前选中 title 滚动到中间位置
             self.scrollCurrentTitleCenter()
@@ -365,14 +382,17 @@ extension XYSegmentTitleView2{
         
         // 2. 滑块处理
         doSlider { type in
+            if !self.sliderFollowSliding, 0 < progress , progress < 1  {
+                return; // 闭包内部 return 返回的是这个闭包
+            }
             switch type {
             case .default:
                 let moveTotalX = targetLabel.frame.origin.x - sourceLabel.frame.origin.x
-                let moveX = moveTotalX * progress
+                let moveX = moveTotalX * progress + sliderInnerMargin
                 scrollLine.frame.origin.x = sourceLabel.frame.origin.x + moveX
         
                 let deltaWidth = (targetLabel.bounds.width - sourceLabel.bounds.width) * progress
-                let lineWidth = deltaWidth + sourceLabel.bounds.width
+                let lineWidth = deltaWidth + sourceLabel.bounds.width - 2*sliderInnerMargin
                 scrollLine.frame.size.width = lineWidth
             case .line:
                 fatalError("not implemented")

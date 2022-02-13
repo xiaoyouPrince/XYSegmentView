@@ -47,6 +47,9 @@ open class XYSegmentViewConfig: NSObject {
     /// 设置滑块的内边距，以 TitleItem 为准，设置其左右两侧边距
     var scrollLineInnerMargin: CGFloat = 0
     
+    /// 设置滑块是否跟随滑动，即滑动过程是否有中间状态
+    var scrollLineFollowSliding: Bool = true
+    
     // MARK: - content 相关
     
     /// 默认的内容容器的 frame
