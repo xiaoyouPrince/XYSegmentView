@@ -44,6 +44,9 @@ open class XYSegmentViewConfig: NSObject {
     // MARK: - title 底部滑块 相关
     var scrollLineType: ScrollLineType = .default
     
+    /// 设置滑块的内边距，以 TitleItem 为准，设置其左右两侧边距
+    var scrollLineInnerMargin: CGFloat = 0
+    
     // MARK: - content 相关
     
     /// 默认的内容容器的 frame

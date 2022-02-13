@@ -18,13 +18,13 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
     
     func setNormalState() {
         if let label = subviews.first as? UILabel {
-            label.textColor = .red
+            label.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
         }
     }
     
     func setSelectedState() {
         if let label = subviews.first as? UILabel {
-            label.textColor = .green
+            label.textColor = UIColor(r: kSelectColor.0, g: kSelectColor.1, b: kSelectColor.2)
         }
     }
     
@@ -41,8 +41,6 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
         if let label = subviews.first as? UILabel {
             
             let colorDelta = (kSelectColor.0 - kNormalColor.0, kSelectColor.1 - kNormalColor.1, kSelectColor.2 - kNormalColor.2)
-            
-//            label.textColor = UIColor(r: kSelectColor.0 - colorDelta.0 * progress, g: kSelectColor.1 - colorDelta.1 * progress, b: kSelectColor.2 - colorDelta.2 * progress)
             
             label.textColor = UIColor(r: kNormalColor.0 + colorDelta.0 * progress, g: kNormalColor.1 + colorDelta.1 * progress, b: kNormalColor.2 + colorDelta.2 * progress)
         }
@@ -113,7 +111,6 @@ extension XYSegmentTitleView2{
         // 1.添加对应的scrollview
         addSubview(scrollView)
         scrollView.frame = self.bounds
-//        scrollView.backgroundColor = UIColor.yellow
         
         // 2.添加lable
         setupTitleLabels()
@@ -177,12 +174,10 @@ extension XYSegmentTitleView2{
             scrollView.addSubview(item)
 
             // 5.添加到Label的数组中
-//            titleLabels.append(label)
             titleItems.append(item)
             item.setNormalState()
 
             // 6.给Label添加手势
-//            label.isUserInteractionEnabled = true
             let tapGes = UITapGestureRecognizer(target: self, action: #selector(self.titleLabelClick(tapGes:)))
             item.addGestureRecognizer(tapGes)
             
@@ -368,7 +363,7 @@ extension XYSegmentTitleView2{
         let sourceLabel = titleItems[sourceIndex]
         let targetLabel = titleItems[targetIndex]
         
-        
+        // 2. 滑块处理
         doSlider { type in
             switch type {
             case .default:
@@ -385,52 +380,6 @@ extension XYSegmentTitleView2{
                 doSliderWithProgress(progress: progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
             }
         }
-        
-        // 2.处理滑块的逻辑
-//        let moveTotalX = targetLabel.frame.origin.x - sourceLabel.frame.origin.x
-//        let moveX = moveTotalX * progress
-//        scrollLine.frame.origin.x = sourceLabel.frame.origin.x + moveX
-//
-//        let deltaWidth = (targetLabel.bounds.width - sourceLabel.bounds.width) * progress
-//        let lineWidth = deltaWidth + sourceLabel.bounds.width
-//        scrollLine.frame.size.width = lineWidth
-        
-//        let moveTotalX = abs(targetLabel.center.x - sourceLabel.center.x)
-//        if progress >= 0.5 { // 后半段
-//            if targetIndex > sourceIndex { // 左滑
-//                let deltaX = moveTotalX * ((progress - 0.5) * 2)
-//                scrollLine.frame.origin.x = sourceLabel.center.x - kScrollLineH / 2 + deltaX
-//
-//                var lineWidth = moveTotalX * (1 - (progress - 0.5) * 2)
-//                if lineWidth <= kScrollLineH {
-//                    lineWidth = kScrollLineH
-//                }
-//                scrollLine.frame.size.width = lineWidth
-//            }else{
-//                var lineWidth = moveTotalX * (1 - (progress - 0.5) * 2)
-//                if lineWidth <= kScrollLineH {
-//                    lineWidth = kScrollLineH
-//                }
-//                scrollLine.frame.size.width = lineWidth
-//            }
-//        }else{ // 前半段
-//            if targetIndex > sourceIndex { // 左滑
-//                var lineWidth = moveTotalX * progress * 2
-//                if lineWidth <= kScrollLineH {
-//                    lineWidth = kScrollLineH
-//                }
-//                scrollLine.frame.size.width = lineWidth
-//            }else{
-//                let deltaX = moveTotalX * progress * 2
-//                scrollLine.frame.origin.x = sourceLabel.center.x - kScrollLineH / 2 - deltaX
-//
-//                var lineWidth = moveTotalX * progress * 2
-//                if lineWidth <= kScrollLineH {
-//                    lineWidth = kScrollLineH
-//                }
-//                scrollLine.frame.size.width = lineWidth
-//            }
-//        }
         
         
         // 3. 处理 item 滑动进度

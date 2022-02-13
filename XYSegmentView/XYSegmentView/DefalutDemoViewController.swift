@@ -51,10 +51,13 @@ class DefalutDemoViewController: UIViewController {
             "header 数据较少依次排开",
             "header 数据较少依次排开 - 自定间距",
             "header 多数据自适应宽度",
-            
-//            "header 数据较少平分宽度",
-//            "header 数据较少依次排开",
-//            "header 多数据自适应宽度",
+            "滑块 为条状且与 title 等宽度,跟随滑动",
+            "滑块 为条状且与 title 等宽度,不跟随滑动",
+            "滑块 为点状且切换有粘连效果",
+            "滑块 为点状且切换无粘连效果，不跟随滑动",
+            "滑块 指定宽高, 跟随滑动",
+            "滑块 指定宽高, 跟随滑动, 有粘连效果",
+            "滑块 指定宽高, 不跟随滑动",
         ]
         
         for (index,title) in demoTitles.enumerated() {
@@ -62,8 +65,6 @@ class DefalutDemoViewController: UIViewController {
             let config = XYSegmentViewConfig()
             config.frame = CGRect(x: 20, y: 40, width: kScreenW - 40, height: demoViewHeight - 50)
             config.titleViewFrame = CGRect(x: 0, y: 0, width: config.frame.width, height: 44)
-            
-            config.scrollLineType = .dot
             
             
             config.containerViewFrame = CGRect(x: 0, y: 44, width: config.frame.width, height: config.frame.height - 44)
@@ -83,6 +84,10 @@ class DefalutDemoViewController: UIViewController {
                 config.titleMargin = 50
             }
             
+            if index != 0 {
+                config.titles = ["推荐","游戏","娱乐","趣玩"]
+            }
+            
             if index == 4 {
                 config.titles = ["推荐","游戏","娱乐","趣玩","推荐333","游戏333游戏哈哈","娱乐0","趣玩1","推荐2313","游戏993js","娱乐jjddz","趣玩qnmb"]
                 var vcs: [UIViewController] = []
@@ -91,6 +96,35 @@ class DefalutDemoViewController: UIViewController {
                 }
                 config.contentVCs = vcs
             }
+            
+            if index == 5 {
+                config.scrollLineType = .default
+            }
+            
+            if index == 6 {
+                config.scrollLineType = .default
+            }
+            
+            if index == 7 {
+                config.scrollLineType = .dot
+            }
+            
+            if index == 8 {
+                config.scrollLineType = .dot
+            }
+            
+            if index == 9 {
+                config.scrollLineType = .dot
+            }
+            
+            if index == 10 {
+                config.scrollLineType = .dot
+            }
+            
+            if index == 11 {
+                config.scrollLineType = .dot
+            }
+            
             
             let demo = DemoView(title: title, config: config)
             demo.frame.origin.y = CGFloat(index) * demoViewHeight
