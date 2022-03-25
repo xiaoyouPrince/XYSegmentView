@@ -9,7 +9,7 @@ import UIKit
 
 
 // MARK: - 定义常量
-private let kScrollLineH : CGFloat = 2
+private let kScrollLineH : CGFloat = 8
 private let kNormalColor : (CGFloat, CGFloat, CGFloat) = (85, 85, 85)
 private let kSelectColor : (CGFloat, CGFloat, CGFloat) = (255, 128, 0)
 
@@ -206,6 +206,8 @@ extension XYSegmentTitleView2{
                 fatalError("not implemented")
             case .dot:
                 scrollLine.frame = CGRect(x: label.center.x, y: label.frame.origin.y+label.frame.height, width: kScrollLineH, height: kScrollLineH)
+                scrollLine.layer.cornerRadius = kScrollLineH / 2
+                scrollLine.clipsToBounds = true
             }
         }
         

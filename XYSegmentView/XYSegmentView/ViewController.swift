@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
-        let titles = ["推荐","游戏","娱乐","趣玩"];
+        let titles = ["默认效果","仿写","娱乐","趣玩"];
         
         // content
         let contentY : CGFloat = titleViewH

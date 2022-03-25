@@ -19,7 +19,7 @@ class DemoView: UIView {
     init(title: String, config: XYSegmentViewConfig) {
         
         label.text = title
-        label.frame = CGRect(x: 0, y: 10, width: kScreenW, height: 20)
+        label.frame = CGRect(x: 20, y: 10, width: kScreenW-40, height: 20)
         segmentView = XYSegmentView(config: config)
         
         super.init(frame: CGRect(x: 0, y: 0, width: kScreenW, height: demoViewHeight))
@@ -58,7 +58,7 @@ class DefalutDemoViewController: UIViewController {
             "滑块 为圆点点状且切换无粘连效果，不跟随滑动",
             "滑块 指定宽高, 跟随滑动",
             "滑块 指定宽高, 跟随滑动, 有粘连效果",
-            "滑块 指定宽高, 不跟随滑动",
+            "内容禁用左右滑动，只保留title点击切换",
         ]
         
         for (index,title) in demoTitles.enumerated() {
@@ -117,14 +117,21 @@ class DefalutDemoViewController: UIViewController {
             
             if index == 9 {
                 config.scrollLineType = .dot
+                config.scrollLineFollowSliding = false
             }
             
             if index == 10 {
-                config.scrollLineType = .dot
+                config.scrollLineType = .default
+                config.scrollLineInnerMargin = 5
             }
             
             if index == 11 {
-                config.scrollLineType = .dot
+                config.scrollLineType = .default
+                
+            }
+            
+            if index == 12 {
+                config.contentScrollEnable = false
             }
             
             
