@@ -44,7 +44,7 @@ open class XYSegmentView: UIView {
     
     /// 指定初始化器
     /// - Parameter config: 指定设置类
-    init(config: XYSegmentViewConfig) {
+    public init(config: XYSegmentViewConfig) {
         super.init(frame: config.frame)
         self.config = config
         

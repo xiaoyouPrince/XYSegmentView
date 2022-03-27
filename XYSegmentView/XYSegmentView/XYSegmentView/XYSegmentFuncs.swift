@@ -31,15 +31,15 @@ func isIPhoneX() -> Bool {
     navHeight() == 20
 }
 
-let iPhoneX = isIPhoneX()
-let kStatusBarH = navHeight()
-let kNavBarH : CGFloat = 44
-let kNavHeight : CGFloat = kStatusBarH + kNavBarH
-let kTabbarH : CGFloat = 49
-let kTabSafeH : CGFloat = tabbarSafeHeight()
+public let iPhoneX = isIPhoneX()
+public let kStatusBarH = navHeight()
+public let kNavBarH : CGFloat = 44
+public let kNavHeight : CGFloat = kStatusBarH + kNavBarH
+public let kTabbarH : CGFloat = 49
+public let kTabSafeH : CGFloat = tabbarSafeHeight()
 
-let kScreenW : CGFloat = UIScreen.main.bounds.width
-let kScreenH : CGFloat = UIScreen.main.bounds.height
+public let kScreenW : CGFloat = UIScreen.main.bounds.width
+public let kScreenH : CGFloat = UIScreen.main.bounds.height
 
 // 重写一个UIColor的扩展，通过重写构造方法实现
 extension UIColor{
