@@ -12,13 +12,13 @@ open class XYSegmentView: UIView {
     public var config: XYSegmentViewConfig = XYSegmentViewConfig()
     
     // MARK: - 懒加载pagetitleView
-    lazy var pageTitleView : XYSegmentTitleView2 = { [weak self] in
+    lazy var pageTitleView : XYSegmentTitleView = { [weak self] in
         
         let titleFrame = config.titleViewFrame
         let titles = config.titles
         
         // 创建对应的titleView
-        let titleView = XYSegmentTitleView2.init(frame: titleFrame, titles: titles)
+        let titleView = XYSegmentTitleView.init(frame: titleFrame, titles: titles)
         titleView.backgroundColor = UIColor.clear
         
         // 成为代理

@@ -47,7 +47,15 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
     }
 }
 
-class XYSegmentTitleView2: UIView {
+//// MARK: - 定义自己代理
+protocol XYSegmentTitleViewDelegate : XYSegmentConfigProtocol {
+    
+    // 这里只是方法的定义 --selectIndex index :分别是内部和外部属性
+    func pageTitleView(titleView : XYSegmentTitleView , selectIndex index : Int)
+    
+}
+
+class XYSegmentTitleView: UIView {
     
     // MARK: - 自定义属性
     fileprivate var titles : [String]
@@ -103,7 +111,7 @@ class XYSegmentTitleView2: UIView {
 }
 
 // MARK: - 设置UI
-extension XYSegmentTitleView2{
+extension XYSegmentTitleView{
     
     
     fileprivate func setupUI(){
@@ -215,7 +223,7 @@ extension XYSegmentTitleView2{
     }
 }
 
-extension XYSegmentTitleView2 {
+extension XYSegmentTitleView {
     
     var sliderInnerMargin: CGFloat {
         if let scrollLineInnerMargin = delegate?.config.scrollLineInnerMargin {
@@ -296,8 +304,8 @@ extension XYSegmentTitleView2 {
 }
 
 
-// MARK: - 监听Label的点击 -- 必须使用@objc
-extension XYSegmentTitleView2{
+// MARK: - 监听Label的点击
+extension XYSegmentTitleView{
     
     @objc fileprivate func titleLabelClick(tapGes : UITapGestureRecognizer){
         
@@ -345,7 +353,7 @@ extension XYSegmentTitleView2{
         }
         
         // 6.通知代理做事情
-        delegate?.pageTitleView(titleView: XYSegmentTitleView(frame: .zero, titles: ["String"]), selectIndex: currentIndex)
+        delegate?.pageTitleView(titleView: self, selectIndex: currentIndex)
         
     }
     
@@ -374,7 +382,7 @@ extension XYSegmentTitleView2{
 }
 
 // MARK: - 暴露给外界的方法
-extension XYSegmentTitleView2{
+extension XYSegmentTitleView {
     
     func setTitleWithProgress( progress : CGFloat, sourceIndex : Int, targetIndex : Int) {
         

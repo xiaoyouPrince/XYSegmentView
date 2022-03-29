@@ -19,7 +19,7 @@ public protocol XYSegmentConfigProtocol: AnyObject {
     var config: XYSegmentViewConfig {set get}
 }
 
-extension XYSegmentConfigProtocol {
+public extension XYSegmentConfigProtocol {
     /// contentVC 可以实现此协议
     /// 快速获取一些配置参数
     
@@ -73,7 +73,7 @@ public protocol XYSegmentViewTitleItemProtocol: AnyObject {
     
 }
 
-extension XYSegmentViewTitleItemProtocol {
+public extension XYSegmentViewTitleItemProtocol {
     var title: String { "" }
     func setNormalState() { }
     func setSelectedState() { }
@@ -95,7 +95,7 @@ public protocol XYSegmentViewSliderProtocol: AnyObject {
     
 }
 
-extension XYSegmentViewSliderProtocol {
+public extension XYSegmentViewSliderProtocol {
     
 }
 
@@ -104,7 +104,7 @@ public protocol XYSegmentTitleViewProtocol: AnyObject {
     
 }
 
-extension XYSegmentTitleViewProtocol {
+public extension XYSegmentTitleViewProtocol {
     
 }
 
@@ -113,6 +113,6 @@ public protocol XYSegmentContainerViewProtocol: AnyObject {
     
 }
 
-extension XYSegmentContainerViewProtocol {
+public extension XYSegmentContainerViewProtocol {
     
 }
