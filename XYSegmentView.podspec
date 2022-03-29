@@ -3,7 +3,7 @@
 Pod::Spec.new do |s|
 
   s.name             		= 'XYSegmentView'
-  s.version          		= '0.9.0'
+  s.version          		= '0.9.1'
   s.summary          		= 'a custom segment component view, it decouple、elegant and efficient.'
   s.description      		= <<-DESC
 								   一组可定制化的分栏组件，支持一键式配置代码。组件抽取并统一处理了基础公共代码。
