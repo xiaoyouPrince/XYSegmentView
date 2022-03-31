@@ -26,6 +26,9 @@ open class XYSegmentViewConfig: NSObject {
     /// container 容器内容是否可以横向滑动切换 content
     public var contentScrollEnable: Bool = true
     
+    /// 选中项目切换回调，入参为被选中的 Index
+    public var onSelectChangeBlock: ((Int)->())?
+    
     // MARK: - title 相关
     
     /// titleView 高度

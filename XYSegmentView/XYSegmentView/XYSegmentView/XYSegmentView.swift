@@ -10,6 +10,7 @@ import UIKit
 open class XYSegmentView: UIView {
     
     public var config: XYSegmentViewConfig = XYSegmentViewConfig()
+    fileprivate var currentIndex = 0 // 当前被选中的index
     
     // MARK: - 懒加载pagetitleView
     lazy var pageTitleView : XYSegmentTitleView = { [weak self] in
@@ -64,6 +65,8 @@ extension XYSegmentView: XYSegmentTitleViewDelegate{
         
         // 通知contentView修改对应的Index
         pageContentView.setCurrnetIndex(currentIndex: index)
+        config.onSelectChangeBlock?(index)
+        currentIndex = index
     }
 }
 
@@ -73,5 +76,10 @@ extension XYSegmentView: XYSegmentContainerViewDelegate{
         // 接收到代理方法之后，通知titleView去处理对应的文字、滑块、颜色等变化
 
         pageTitleView.setTitleWithProgress(progress : progress, sourceIndex : sourceIndex, targetIndex : targetIndex)
+        
+        if progress == 1.0, currentIndex != targetIndex {
+            config.onSelectChangeBlock?(targetIndex)
+            currentIndex = targetIndex
+        }
     }
 }
