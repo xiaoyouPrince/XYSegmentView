@@ -13,35 +13,10 @@ open class XYSegmentView: UIView {
     fileprivate var currentIndex = 0 // 当前被选中的index
     
     // MARK: - 懒加载pagetitleView
-    lazy var pageTitleView : XYSegmentTitleView = { [weak self] in
-        
-        let titleFrame = config.titleViewFrame
-        let titles = config.titles
-        
-        // 创建对应的titleView
-        let titleView = XYSegmentTitleView.init(frame: titleFrame, titles: titles)
-        titleView.backgroundColor = UIColor.clear
-        
-        // 成为代理
-        titleView.delegate = self
-        
-        return titleView
-        
-    }()
+    lazy var pageTitleView : XYSegmentTitleView = getTitleView()
     
-    // MARK:-懒加载一个pageContentView
-    lazy var pageContentView : XYSegmentContainerView = { [weak self] in
-        
-        let contentFrame = config.containerViewFrame
-        let contentVcs = config.contentVCs
-        let parentVC = config.superVC
-        
-        let contentView = XYSegmentContainerView(frame: contentFrame, childVcs:contentVcs , parentVc: parentVC!)
-        contentView.backgroundColor = UIColor.red
-        contentView.delegate = self
-        
-        return contentView
-    }()
+    // MARK: -懒加载一个pageContentView
+    lazy var pageContentView : XYSegmentContainerView = getContentView()
     
     /// 指定初始化器
     /// - Parameter config: 指定设置类
@@ -50,12 +25,45 @@ open class XYSegmentView: UIView {
         self.config = config
         
         self.backgroundColor = .groupTableViewBackground
-        addSubview(pageTitleView)
-        addSubview(pageContentView)
+        _ = pageTitleView
+        _ = pageContentView
     }
     
     required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+public extension XYSegmentView {
+    
+    private func getTitleView() -> XYSegmentTitleView {
+        let titleFrame = config.titleViewFrame
+        let titles = config.titles
+        let titleView = XYSegmentTitleView.init(frame: titleFrame, titles: titles)
+        titleView.backgroundColor = UIColor.clear
+        addSubview(titleView)
+        titleView.delegate = self
+        return titleView
+    }
+    
+    private func getContentView() -> XYSegmentContainerView {
+        let contentFrame = config.containerViewFrame
+        let contentVcs = config.contentVCs
+        let parentVC = config.superVC
+        let contentView = XYSegmentContainerView(frame: contentFrame, childVcs:contentVcs , parentVc: parentVC!)
+        contentView.backgroundColor = UIColor.clear
+        addSubview(contentView)
+        contentView.delegate = self
+        return contentView
+    }
+    
+    /// 更新内容
+    ///  - 此函数只会更新内容，不会更新 segmentView 本身的 frame
+    func reloadData() {
+        pageTitleView.removeFromSuperview()
+        pageTitleView = getTitleView()
+        pageContentView.removeFromSuperview()
+        pageContentView = getContentView()
     }
 }
 
