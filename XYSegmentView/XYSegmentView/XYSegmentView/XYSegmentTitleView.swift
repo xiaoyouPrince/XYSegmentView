@@ -7,14 +7,25 @@
 
 import UIKit
 
-
-// MARK: - 定义常量
-private let kScrollLineH : CGFloat = 8
-private let kNormalColor : (CGFloat, CGFloat, CGFloat) = (85, 85, 85)
-private let kSelectColor : (CGFloat, CGFloat, CGFloat) = (255, 128, 0)
-
+// defaultScrollLineHeight = 8
+// default kNormalColor = (85, 85, 85)
+// default kSelectColor = (255, 128, 0)
 
 class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
+    
+    var titleView: XYSegmentTitleView {
+        if let titleView = superview?.superview as? XYSegmentTitleView{
+            return titleView
+        }
+        return XYSegmentTitleView(frame: .zero, titles: [])
+    }
+    
+    var kNormalColor: (CGFloat, CGFloat, CGFloat) {
+        return titleView.kNormalColor
+    }
+    var kSelectColor: (CGFloat, CGFloat, CGFloat) {
+        return titleView.kSelectColor
+    }
     
     func setNormalState() {
         if let label = subviews.first as? UILabel {
@@ -83,7 +94,7 @@ class XYSegmentTitleView: UIView {
     fileprivate lazy var scrollLine : UIView = {[weak self] in
         
         let scrollLine = UIView()
-        scrollLine.backgroundColor = UIColor.orange
+        scrollLine.backgroundColor = scrollLineColor
         
         return scrollLine
     }();
@@ -115,6 +126,8 @@ extension XYSegmentTitleView{
     
     
     fileprivate func setupUI(){
+        
+        backgroundColor = selfBgColor
         
         // 1.添加对应的scrollview
         addSubview(scrollView)
@@ -150,12 +163,12 @@ extension XYSegmentTitleView{
             item.tag = index
             
             
-//            // 1.创建Label
+            // 1.创建Label
             let label = UILabel()
 
             // 2.设置对应的属性
             label.text = title
-            label.font = UIFont.systemFont(ofSize: 16.0)
+            label.font = titleFont
             label.tag = index
             label.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
             label.textAlignment = .center
@@ -198,8 +211,8 @@ extension XYSegmentTitleView{
     private func setupBottomLineAndScrollLines(){
         
         let bottomLine = UIView()
-        let bottomLineH : CGFloat = 0.5
-        bottomLine.backgroundColor = UIColor.gray
+        let bottomLineH : CGFloat = separatorHeight
+        bottomLine.backgroundColor = separatorColor
         bottomLine.frame = CGRect(x: 0, y: frame.height - bottomLineH , width: frame.width, height: bottomLineH)
         addSubview(bottomLine)
         
@@ -224,6 +237,48 @@ extension XYSegmentTitleView{
 }
 
 extension XYSegmentTitleView {
+        
+    var kScrollLineH: CGFloat {
+        delegate?.config.scrollLineHeight ?? 2
+    }
+    
+    var kNormalColor: (CGFloat, CGFloat, CGFloat) {
+        
+        if let normalColor = delegate?.config.titleItemNormalColor {
+            return normalColor.getRGB()
+        }
+        
+        return (85, 85, 85)
+    }
+    
+    var kSelectColor : (CGFloat, CGFloat, CGFloat) {
+        
+        if let selectedColor = delegate?.config.titleItemSelectedColor {
+            return selectedColor.getRGB()
+        }
+        
+        return (255, 128, 0)
+    }
+    
+    var selfBgColor: UIColor {
+        delegate?.config.titleViewBackgroundColor ?? .clear
+    }
+    
+    var separatorHeight: CGFloat {
+        delegate?.config.separatorHeight ?? 0.5
+    }
+    
+    var separatorColor: UIColor {
+        delegate?.config.separatorColor ?? .lightGray
+    }
+    
+    var scrollLineColor: UIColor {
+        delegate?.config.scrollLineColor ?? .orange
+    }
+    
+    var titleFont: UIFont {
+        delegate?.config.titleFont ?? UIFont.systemFont(ofSize: 17)
+    }
     
     var sliderInnerMargin: CGFloat {
         if let scrollLineInnerMargin = delegate?.config.scrollLineInnerMargin {

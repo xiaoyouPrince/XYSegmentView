@@ -43,9 +43,34 @@ open class XYSegmentViewConfig: NSObject {
     /// 设置 title 在 titleView 中布局是否为均分宽度，默认 false
     public var isTitleAverageLayout: Bool = false
     
+    /// titleItem 在默认未选中的颜色
+    public var titleItemNormalColor: UIColor?
+    
+    /// titleItem 在默认未选中的颜色
+    public var titleItemSelectedColor: UIColor?
+    
+    /// titleView 自己的背景色
+    public var titleViewBackgroundColor: UIColor?
+    
+    /// titleView底部分割线的高度
+    public var separatorHeight: CGFloat?
+    
+    /// titleView 底部分割线的颜色
+    public var separatorColor: UIColor?
+    
+    /// 设置 title View 顶部只有普通文本时候的 font
+    /// - 此属性在自定义 titleItem 时候可能无效
+    public var titleFont: UIFont?
+    
     
     // MARK: - title 底部滑块 相关
     public var scrollLineType: ScrollLineType = .default
+    
+    /// 设置滑块的颜色
+    public var scrollLineColor: UIColor?
+    
+    /// 设置滑块的高度，当滑块类型为 .dot 时候此值将作为滑块的直径
+    public var scrollLineHeight: CGFloat?
     
     /// 设置滑块的内边距，以 TitleItem 为准，设置其左右两侧边距
     public var scrollLineInnerMargin: CGFloat = 0

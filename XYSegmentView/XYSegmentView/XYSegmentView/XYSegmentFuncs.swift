@@ -55,4 +55,14 @@ extension UIColor{
         return UIColor.init(r: CGFloat(arc4random_uniform(255)), g: CGFloat(arc4random_uniform(255)), b: CGFloat(arc4random_uniform(255)))
     }
     
+    // MARK: - 返回一个颜色的 RGB
+    func getRGB() -> (CGFloat, CGFloat, CGFloat) {
+        var fRed : CGFloat = 0
+        var fGreen : CGFloat = 0
+        var fBlue : CGFloat = 0
+        var fAlpha: CGFloat = 0
+        self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
+        return (fRed * 255, fGreen * 255, fBlue * 255)
+    }
+    
 }
