@@ -26,7 +26,7 @@ open class XYSegmentViewConfig: NSObject {
     /// container 容器内容是否可以横向滑动切换 content
     public var contentScrollEnable: Bool = true
     
-    /// 选中项目切换回调，入参为被选中的 Index
+    /// 选中项目切换回调，入参为被选中的 Index，此参数为 config 共有，多次赋值以最后一次为准
     public var onSelectChangeBlock: ((Int)->())?
     
     // MARK: - title 相关
