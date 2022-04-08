@@ -37,6 +37,10 @@ public extension XYSegmentConfigProtocol {
     
     /// 获取当前 contentVC 的 index。 返回值 -1 表示没有在数组内
     var currentSegmentIndex: Int {
+        if let segmentView = self as? XYSegmentView {
+            return segmentView.currentIndex
+        }
+        
         if self is UIViewController {
             return config.contentVCs.firstIndex(of: self as! UIViewController) ?? -1
         }
