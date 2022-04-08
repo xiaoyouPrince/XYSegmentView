@@ -28,7 +28,7 @@ func tabbarSafeHeight() -> CGFloat {
 }
 
 func isIPhoneX() -> Bool {
-    navHeight() == 20
+    navHeight() != 20
 }
 
 public let iPhoneX = isIPhoneX()
