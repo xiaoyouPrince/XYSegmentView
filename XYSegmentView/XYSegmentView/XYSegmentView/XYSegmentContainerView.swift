@@ -88,14 +88,11 @@ extension XYSegmentContainerView{
     fileprivate func setupUI()
     {
         for childVc in childVcs {
-            
             // 1.添加子控制器
             self.parentVc?.addChild(childVc)
-            
-            // 2.设置内部的collectionview
-            addSubview(collectionView)
-        
         }
+        // 2.设置内部的collectionview
+        addSubview(collectionView)
     }
     
 }

@@ -61,10 +61,17 @@ public extension XYSegmentView {
     ///  - 此函数只会更新内容，不会更新 segmentView 本身的 frame
     func reloadData() {
         currentIndex = 0
-        pageTitleView.removeFromSuperview()
-        pageTitleView = getTitleView()
-        pageContentView.removeFromSuperview()
-        pageContentView = getContentView()
+        
+        if pageTitleView.superview == self {
+            pageTitleView.removeFromSuperview()
+            pageTitleView = getTitleView()
+            pageContentView.removeFromSuperview()
+            pageContentView = getContentView()
+        }else{
+            pageTitleView.reloadData()
+            pageContentView.removeFromSuperview()
+            pageContentView = getContentView()
+        }
     }
     
     /// 选中指定Index.Item

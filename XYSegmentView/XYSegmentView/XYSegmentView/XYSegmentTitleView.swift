@@ -110,13 +110,25 @@ class XYSegmentTitleView: UIView {
         
         // 2.通过frame构造实例变量
         super.init(frame:frame)
-        
-        
     }
     
     // 自定义构造方法必须重写initwithCoder方法
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    /// 重新刷新数据
+    ///  - 只根据 delegate.config 数据刷新，不更新 frame
+    func reloadData(){
+        self.titles = delegate?.config.titles ?? []
+        for (_, sv) in scrollView.subviews.enumerated() {
+            if sv == scrollLine {
+                continue
+            }
+            sv.removeFromSuperview()
+        }
+        titleItems.removeAll()
+        setupUI()
     }
 
 }
