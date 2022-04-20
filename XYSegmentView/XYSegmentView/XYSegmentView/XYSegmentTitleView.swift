@@ -140,6 +140,7 @@ extension XYSegmentTitleView{
     fileprivate func setupUI(){
         
         backgroundColor = selfBgColor
+        currentIndex = 0
         
         // 1.添加对应的scrollview
         addSubview(scrollView)
