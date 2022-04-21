@@ -150,7 +150,7 @@ class HoverConatainerScrollView: UIScrollView, UIGestureRecognizerDelegate {
 extension XYHoverContainerView: UIScrollViewDelegate {
     
     var listViewMaxContentOffsetY: CGFloat {
-        dataSource?.hoverViewHeight ?? 0
+        (dataSource?.topViewHeight ?? 0 ) - (dataSource?.hoverViewHeight ?? 0)
     }
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
