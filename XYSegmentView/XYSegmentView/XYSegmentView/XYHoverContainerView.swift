@@ -39,21 +39,40 @@ var theRightSVOffset: CGPoint = .zero
 
 public protocol XYHoverContainerDataSource: NSObjectProtocol {
     
+    /// 设置 topView
     var topView: UIView { get }
+    
+    /// 指定 topView 的高度
     var topViewHeight: CGFloat { get }
+    
+    /// 指定要悬浮区域的高度
     var hoverViewHeight: CGFloat { get }
+    
+    /// 指定内部滚动视图
     var listView: UIScrollView { get }
+    
+    /// 指定内部滚动视图的底部安全区域高度。 默认高度 0
+    ///  - 比如矩形屏幕和刘海屏可以指定34/0。 此值由数据源自行设置
     var listViewBottomSafeHeight: CGFloat { get }
+    
+    /// 设置当前滚动视图
+    /// - 默认实现是 listView
+    /// - 如果 listView 内部有多视图，可以在切换视图的时候自行指定
+    var currentScrollingScrollView: UIScrollView { get }
    
-    func listViewDidScrollCallback(callback: @escaping (UIScrollView)->())
+//    func listViewDidScrollCallback(callback: @escaping (UIScrollView)->())
 }
 public typealias HoverViewDataSource = XYHoverContainerDataSource
+public extension HoverViewDataSource {
+    var listViewBottomSafeHeight: CGFloat { 0 }
+    var currentScrollingScrollView: UIScrollView { listView }
+}
 
 public class XYHoverContainerView: UIView {
     
     private weak var dataSource: XYHoverContainerDataSource?
     
-    public private(set) var currentScrollingScrollView: UIScrollView?
+//    public private(set) var currentScrollingScrollView: UIScrollView?
     
     private lazy var containerScrollView: HoverConatainerScrollView = {
         let scrollView = HoverConatainerScrollView(frame: .zero)
@@ -118,27 +137,18 @@ extension XYHoverContainerView {
         dataSource?.listViewBottomSafeHeight ?? 0
     }
     
+    var currentScrollingScrollView: UIScrollView {
+        dataSource?.currentScrollingScrollView ?? UIScrollView()
+    }
+    
     func setupUI() {
         addSubview(containerScrollView)
         containerScrollView.addSubview(topView)
         containerScrollView.addSubview(listContentView)
-        
-        
-        dataSource?.listViewDidScrollCallback {[weak self] sv in
-//            self?.listViewDidScroll(sv)
-            theRightSV = sv
-            theRightSVOffset = sv.contentOffset
-        }
-        
-//        currentScrollingScrollView = dataSource?.listView
+
+        theRightSV = currentScrollingScrollView
+        theRightSVOffset = theRightSV!.contentOffset
     }
-    
-//    /// 外部传入的listView，当其内部的scrollView滚动时，需要调用该方法
-//    func listViewDidScroll(scrollView: UIScrollView) {
-//        currentScrollingListView = scrollView
-//        currentScrollingListView?.frame = listContentView.bounds
-//        listContentView.reloadData()
-//    }
 }
 
 class HoverConatainerScrollView: UIScrollView, UIGestureRecognizerDelegate {
@@ -156,7 +166,6 @@ extension XYHoverContainerView: UIScrollViewDelegate {
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
-//        guard let listView = currentScrollingListView else { return }
         if scrollView.contentOffset.y >= listViewMaxContentOffsetY {
             scrollView.contentOffset = CGPoint(x: 0, y: listViewMaxContentOffsetY)
         }
