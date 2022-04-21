@@ -34,9 +34,6 @@
 
 import UIKit
 
-var theRightSV: UIScrollView? = nil
-var theRightSVOffset: CGPoint = .zero
-
 public protocol XYHoverContainerDataSource: NSObjectProtocol {
     
     /// 设置 topView
@@ -59,8 +56,6 @@ public protocol XYHoverContainerDataSource: NSObjectProtocol {
     /// - 默认实现是 listView
     /// - 如果 listView 内部有多视图，可以在切换视图的时候自行指定
     var currentScrollingScrollView: UIScrollView { get }
-   
-//    func listViewDidScrollCallback(callback: @escaping (UIScrollView)->())
 }
 public typealias HoverViewDataSource = XYHoverContainerDataSource
 public extension HoverViewDataSource {
@@ -71,8 +66,7 @@ public extension HoverViewDataSource {
 public class XYHoverContainerView: UIView {
     
     private weak var dataSource: XYHoverContainerDataSource?
-    
-//    public private(set) var currentScrollingScrollView: UIScrollView?
+    private var currentScrollingViewOffset: CGPoint = .zero
     
     private lazy var containerScrollView: HoverConatainerScrollView = {
         let scrollView = HoverConatainerScrollView(frame: .zero)
@@ -110,9 +104,6 @@ public class XYHoverContainerView: UIView {
         listContentView.frame = .init(x: 0, y: topViewHeight, width: bounds.width, height: bounds.height - hoverViewHeight - bottomSafeHeight)
         listView.frame = listContentView.bounds
     }
-    
-    private var lastOffsetY: CGFloat = .zero
-
 }
 
 extension XYHoverContainerView {
@@ -145,9 +136,7 @@ extension XYHoverContainerView {
         addSubview(containerScrollView)
         containerScrollView.addSubview(topView)
         containerScrollView.addSubview(listContentView)
-
-        theRightSV = currentScrollingScrollView
-        theRightSVOffset = theRightSV!.contentOffset
+        currentScrollingViewOffset = currentScrollingScrollView.contentOffset
     }
 }
 
@@ -182,21 +171,23 @@ extension XYHoverContainerView: UIScrollViewDelegate {
         
         // 优化真实滚动的 listView，效果看起来要
         if scrollView.contentOffset.y < listViewMaxContentOffsetY, scrollView.contentOffset.y > 0 {
-            theRightSV?.contentOffset = theRightSVOffset
+            currentScrollingScrollView.contentOffset = currentScrollingViewOffset
         }else{
-            theRightSVOffset = theRightSV!.contentOffset
+            currentScrollingViewOffset = currentScrollingScrollView.contentOffset
         }
         
-        print("theRightSVOffset - \(theRightSVOffset)")
+        #if DEBUG
+        print("theRightSVOffset - \(currentScrollingViewOffset)")
+        #endif
     }
     
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        theRightSVOffset = theRightSV!.contentOffset
+        currentScrollingViewOffset = currentScrollingScrollView.contentOffset
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         // 保存上一次
-        theRightSVOffset = theRightSV!.contentOffset
+        currentScrollingViewOffset = currentScrollingScrollView.contentOffset
     }
 }
 
