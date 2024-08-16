@@ -17,7 +17,16 @@ import UIKit
 
 func navHeight() -> CGFloat {
     if #available(iOS 13.0, *) {
-        return UIApplication.shared.keyWindow?.windowScene?.statusBarManager?.statusBarFrame.height ?? UIApplication.shared.statusBarFrame.height
+        func getKeyWindow() -> UIWindow? {
+            let connectedScenes = UIApplication.shared.connectedScenes
+                .filter{$0.activationState == .foregroundActive}
+                .compactMap { $0 as? UIWindowScene }
+            let window = connectedScenes.first?
+                .windows
+                .first{ $0.isKeyWindow }
+            return window
+        }
+        return getKeyWindow()?.windowScene?.statusBarManager?.statusBarFrame.height ?? 20
     } else {
         return UIApplication.shared.statusBarFrame.height
     }
@@ -64,5 +73,7 @@ extension UIColor{
         self.getRed(&fRed, green: &fGreen, blue: &fBlue, alpha: &fAlpha)
         return (fRed * 255, fGreen * 255, fBlue * 255)
     }
+    
+    static let segmentBgColor = UIColor.init(r: 0.95, g: 0.95, b: 0.95)
     
 }

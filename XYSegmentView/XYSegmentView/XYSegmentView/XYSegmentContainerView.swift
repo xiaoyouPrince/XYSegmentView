@@ -48,7 +48,6 @@ class XYSegmentContainerView: UIView {
         layout.minimumInteritemSpacing = 0
         layout.scrollDirection = .horizontal
         
-        
         let collectionView = UICollectionView(frame: (self?.bounds)!, collectionViewLayout: layout)
         collectionView.collectionViewLayout = layout
         collectionView.showsHorizontalScrollIndicator = false

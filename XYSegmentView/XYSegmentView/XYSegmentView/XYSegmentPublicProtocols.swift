@@ -11,7 +11,7 @@
 import UIKit
 
 fileprivate struct AssociatedKeys {
-    static var configKey: String = String()
+    static var configKey: Void?
 }
 
 /// ContentView 协议，定义了 ContentView 的基本操作

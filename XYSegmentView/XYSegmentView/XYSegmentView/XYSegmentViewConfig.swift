@@ -16,7 +16,7 @@ public enum ScrollLineType {
     case dot
 }
 
-open class XYSegmentViewConfig: NSObject {
+public class XYSegmentViewConfig: NSObject {
     
     /// 设置XYSegmentView整体的 frame
     ///

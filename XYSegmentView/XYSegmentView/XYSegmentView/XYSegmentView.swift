@@ -7,9 +7,9 @@
 
 import UIKit
 
-open class XYSegmentView: UIView {
+public class XYSegmentView: UIView {
     
-    public var config: XYSegmentViewConfig = XYSegmentViewConfig()
+    public var config: XYSegmentViewConfig
     private(set) var currentIndex = 0 // 当前被选中的index
     
     // MARK: - 懒加载pagetitleView
@@ -21,10 +21,10 @@ open class XYSegmentView: UIView {
     /// 指定初始化器
     /// - Parameter config: 指定设置类
     public init(config: XYSegmentViewConfig) {
-        super.init(frame: config.frame)
         self.config = config
+        super.init(frame: config.frame)
         
-        self.backgroundColor = .groupTableViewBackground
+        self.backgroundColor = .segmentBgColor
         _ = pageTitleView
         _ = pageContentView
     }

@@ -94,7 +94,7 @@ class XYSegmentTitleView: UIView {
     fileprivate lazy var scrollLine : UIView = {[weak self] in
         
         let scrollLine = UIView()
-        scrollLine.backgroundColor = scrollLineColor
+        scrollLine.backgroundColor = self?.scrollLineColor
         
         return scrollLine
     }();
