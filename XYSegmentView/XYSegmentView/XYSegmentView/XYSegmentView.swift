@@ -100,6 +100,11 @@ extension XYSegmentView: XYSegmentTitleViewDelegate{
 
 
 extension XYSegmentView: XYSegmentContainerViewDelegate{
+    
+    var currentPage: Int {
+        currentIndex
+    }
+    
     func pageContentView(_ contentView: XYSegmentContainerView, progress: CGFloat, sourceIndex: Int, targetIndex: Int) {
         // 接收到代理方法之后，通知titleView去处理对应的文字、滑块、颜色等变化
 

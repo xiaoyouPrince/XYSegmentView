@@ -11,6 +11,8 @@ private let cellID : String = "CellID"
 
 protocol XYSegmentContainerViewDelegate : XYSegmentConfigProtocol {
     
+    var currentPage: Int { get }
+    
     func pageContentView(_ contentView : XYSegmentContainerView, progress : CGFloat, sourceIndex : Int, targetIndex : Int)
 
 }
@@ -185,6 +187,16 @@ extension XYSegmentContainerView : UICollectionViewDelegate{
         delegate?.pageContentView(self, progress: progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
 
         
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let page = Int(scrollView.contentOffset.x / scrollView.bounds.width)
+        
+        let currentPage = delegate?.currentPage ?? 0
+        if currentPage != page {
+            // 滑动过快，直接从0 -> 2, 可能导致 scrollViewDidScroll 中偏移量计算精度不够，导致最后停止时候当前页面没有正确设置
+            delegate?.pageContentView(self, progress: 1.0, sourceIndex: currentPage, targetIndex: page)
+        }
     }
     
 }
