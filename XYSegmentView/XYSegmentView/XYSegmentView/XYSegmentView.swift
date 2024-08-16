@@ -84,6 +84,7 @@ public extension XYSegmentView {
         pageTitleView.setTitleWithProgress(progress: 1.0, sourceIndex: currentIndex, targetIndex: index)
         pageContentView.setCurrnetIndex(currentIndex: index)
         currentIndex = index
+        config.onSelectChangeBlock?(index)
     }
 }
 
