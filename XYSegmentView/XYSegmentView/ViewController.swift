@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
-        let titles = ["默认效果","仿写","娱乐","趣玩"];
+        let titles = ["默认效果","仿写","tableHeder","趣玩"];
         
         // content
         let contentY : CGFloat = titleViewH
@@ -37,7 +37,14 @@ class ViewController: UIViewController {
             if index == 0 {
                 contentVcs.append(DefalutDemoViewController())
             }else{
-                contentVcs.append(CommonViewController())
+                
+                if index == 2 {
+                    contentVcs.append(TableViewController())
+                }else if index == 3 {
+                    contentVcs.append(ScrollViewController())
+                }else{
+                    contentVcs.append(CommonViewController())
+                }
             }
         }
         

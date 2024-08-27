@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		B40DDEB427B38F2E007A71CD /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40DDEB327B38F2E007A71CD /* DemoViewController.swift */; };
-		B40DDEB627B5563A007A71CD /* XYSegmentTitleView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40DDEB527B5563A007A71CD /* XYSegmentTitleView2.swift */; };
+		B421B9F427EE053A00C3BD58 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B421B9F327EE053A00C3BD58 /* TableViewController.swift */; };
+		B421B9F627EECAED00C3BD58 /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B421B9F527EECAED00C3BD58 /* ScrollViewController.swift */; };
+		B42210DF2810020F004D6592 /* XYHoverContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B42210DE2810020F004D6592 /* XYHoverContainerView.swift */; };
 		B456FDF127AFA56300A822CB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456FDF027AFA56300A822CB /* AppDelegate.swift */; };
 		B456FDF327AFA56300A822CB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456FDF227AFA56300A822CB /* SceneDelegate.swift */; };
 		B456FDF527AFA56300A822CB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B456FDF427AFA56300A822CB /* ViewController.swift */; };
@@ -20,6 +22,7 @@
 		B47EE9A927B0E00100ED1982 /* XYSegmentFuncs.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE9A827B0E00100ED1982 /* XYSegmentFuncs.swift */; };
 		B47EE9AB27B1083C00ED1982 /* XYSegmentContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE9AA27B1083C00ED1982 /* XYSegmentContainerView.swift */; };
 		B47EE9AD27B1097600ED1982 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B47EE9AC27B1097600ED1982 /* CommonViewController.swift */; };
+		B4A6D78727F02D4700BE9807 /* ForwardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4A6D78627F02D4700BE9807 /* ForwardViewController.swift */; };
 		B4BD7B1727B0C192008E1278 /* XYSegmentTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */; };
 		B4EBE9D127B162EB007BCEBD /* XYSegmentViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */; };
 		B4EBE9D327B2A10B007BCEBD /* XYSegmentPublicProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */; };
@@ -27,7 +30,9 @@
 
 /* Begin PBXFileReference section */
 		B40DDEB327B38F2E007A71CD /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
-		B40DDEB527B5563A007A71CD /* XYSegmentTitleView2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentTitleView2.swift; sourceTree = "<group>"; };
+		B421B9F327EE053A00C3BD58 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TableViewController.swift; path = XYSegmentView/TableViewController.swift; sourceTree = SOURCE_ROOT; };
+		B421B9F527EECAED00C3BD58 /* ScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
+		B42210DE2810020F004D6592 /* XYHoverContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYHoverContainerView.swift; sourceTree = "<group>"; };
 		B456FDED27AFA56300A822CB /* XYSegmentView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XYSegmentView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B456FDF027AFA56300A822CB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B456FDF227AFA56300A822CB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +46,7 @@
 		B47EE9A827B0E00100ED1982 /* XYSegmentFuncs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentFuncs.swift; sourceTree = "<group>"; };
 		B47EE9AA27B1083C00ED1982 /* XYSegmentContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentContainerView.swift; sourceTree = "<group>"; };
 		B47EE9AC27B1097600ED1982 /* CommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
+		B4A6D78627F02D4700BE9807 /* ForwardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardViewController.swift; sourceTree = "<group>"; };
 		B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentTitleView.swift; sourceTree = "<group>"; };
 		B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentViewConfig.swift; sourceTree = "<group>"; };
 		B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentPublicProtocols.swift; sourceTree = "<group>"; };
@@ -79,10 +85,13 @@
 				B456FE0427AFA5A000A822CB /* XYSegmentView */,
 				B456FDF027AFA56300A822CB /* AppDelegate.swift */,
 				B456FDF227AFA56300A822CB /* SceneDelegate.swift */,
+				B421B9F327EE053A00C3BD58 /* TableViewController.swift */,
+				B421B9F527EECAED00C3BD58 /* ScrollViewController.swift */,
 				B456FDF427AFA56300A822CB /* ViewController.swift */,
 				B40DDEB327B38F2E007A71CD /* DemoViewController.swift */,
 				B47EE9AC27B1097600ED1982 /* CommonViewController.swift */,
 				B4671E0827B6713B00D20B30 /* DefalutDemoViewController.swift */,
+				B4A6D78627F02D4700BE9807 /* ForwardViewController.swift */,
 				B456FDF627AFA56300A822CB /* Main.storyboard */,
 				B456FDF927AFA56600A822CB /* Assets.xcassets */,
 				B456FDFB27AFA56600A822CB /* LaunchScreen.storyboard */,
@@ -96,11 +105,11 @@
 			children = (
 				B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */,
 				B456FE0527AFA5E200A822CB /* XYSegmentView.swift */,
-				B40DDEB527B5563A007A71CD /* XYSegmentTitleView2.swift */,
 				B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */,
 				B47EE9AA27B1083C00ED1982 /* XYSegmentContainerView.swift */,
 				B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */,
 				B47EE9A827B0E00100ED1982 /* XYSegmentFuncs.swift */,
+				B42210DE2810020F004D6592 /* XYHoverContainerView.swift */,
 			);
 			path = XYSegmentView;
 			sourceTree = "<group>";
@@ -132,8 +141,10 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				CLASSPREFIX = XY;
 				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1300;
+				ORGANIZATIONNAME = xiaoyou;
 				TargetAttributes = {
 					B456FDEC27AFA56300A822CB = {
 						CreatedOnToolsVersion = 13.0;
@@ -177,18 +188,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				B47EE9A927B0E00100ED1982 /* XYSegmentFuncs.swift in Sources */,
+				B421B9F427EE053A00C3BD58 /* TableViewController.swift in Sources */,
 				B4EBE9D327B2A10B007BCEBD /* XYSegmentPublicProtocols.swift in Sources */,
 				B4671E0927B6713B00D20B30 /* DefalutDemoViewController.swift in Sources */,
 				B456FDF527AFA56300A822CB /* ViewController.swift in Sources */,
 				B47EE9AB27B1083C00ED1982 /* XYSegmentContainerView.swift in Sources */,
 				B4EBE9D127B162EB007BCEBD /* XYSegmentViewConfig.swift in Sources */,
+				B421B9F627EECAED00C3BD58 /* ScrollViewController.swift in Sources */,
+				B42210DF2810020F004D6592 /* XYHoverContainerView.swift in Sources */,
 				B40DDEB427B38F2E007A71CD /* DemoViewController.swift in Sources */,
 				B456FE0627AFA5E200A822CB /* XYSegmentView.swift in Sources */,
+				B4A6D78727F02D4700BE9807 /* ForwardViewController.swift in Sources */,
 				B4BD7B1727B0C192008E1278 /* XYSegmentTitleView.swift in Sources */,
 				B47EE9AD27B1097600ED1982 /* CommonViewController.swift in Sources */,
 				B456FDF127AFA56300A822CB /* AppDelegate.swift in Sources */,
 				B456FDF327AFA56300A822CB /* SceneDelegate.swift in Sources */,
-				B40DDEB627B5563A007A71CD /* XYSegmentTitleView2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
