@@ -24,7 +24,7 @@ func navHeight() -> CGFloat {
             let window = connectedScenes.first?
                 .windows
                 .first{ $0.isKeyWindow }
-            return window
+            return window ?? UIApplication.shared.delegate?.window ?? UIApplication.shared.keyWindow
         }
         return getKeyWindow()?.windowScene?.statusBarManager?.statusBarFrame.height ?? 20
     } else {

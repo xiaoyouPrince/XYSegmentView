@@ -58,6 +58,7 @@ class ViewController: UIViewController {
             config.isTitleAverageLayout = true
         }
         config.titleMargin = 30
+        config.titleViewBackgroundColor = .white
         
         config.containerViewFrame = contentFrame
         config.contentVCs = contentVcs
