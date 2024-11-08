@@ -187,7 +187,27 @@ extension XYSegmentTitleView{
             label.textAlignment = .center
             label.sizeToFit()
             
-            item.addSubview(label)
+            if let url = URL(string: title), url.scheme != nil {
+                DispatchQueue.global().async {
+                    if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                        DispatchQueue.main.async {
+                            let iv = UIImageView(image: image)
+                            item.addSubview(iv)
+                            iv.translatesAutoresizingMaskIntoConstraints = false
+                            NSLayoutConstraint.activate([
+                                iv.leadingAnchor.constraint(equalTo: item.leadingAnchor),
+                                iv.trailingAnchor.constraint(equalTo: item.trailingAnchor),
+                                iv.topAnchor.constraint(equalTo: item.topAnchor),
+                                iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
+                            ])
+                        }
+                    } else { // 图片加载失败, 默认图?
+                        
+                    }
+                }
+            } else {
+                item.addSubview(label)
+            }
             
 
             // 3. 设置frame
@@ -196,11 +216,19 @@ extension XYSegmentTitleView{
                 item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
                 label.frame = item.bounds
             }else{
-                let labelW : CGFloat = label.bounds.width + titleMargin
-                let labelX : CGFloat = totoalWidth
-                totoalWidth += labelW
-                item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
-                label.frame = item.bounds
+                if let url = URL(string: title), url.scheme != nil {
+                    let labelW : CGFloat = 100 + titleMargin // 图片默认 100 宽度
+                    let labelX : CGFloat = totoalWidth
+                    totoalWidth += labelW
+                    item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+                    label.frame = item.bounds
+                } else {
+                    let labelW : CGFloat = label.bounds.width + titleMargin
+                    let labelX : CGFloat = totoalWidth
+                    totoalWidth += labelW
+                    item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+                    label.frame = item.bounds
+                }
             }
 
 
