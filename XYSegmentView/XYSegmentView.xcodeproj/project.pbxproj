@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09ABAE8CF68EC745B819715C /* Pods_XYSegmentView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2A8B9708C876C5B11D5B260 /* Pods_XYSegmentView.framework */; };
 		B40DDEB427B38F2E007A71CD /* DemoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B40DDEB327B38F2E007A71CD /* DemoViewController.swift */; };
 		B421B9F427EE053A00C3BD58 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B421B9F327EE053A00C3BD58 /* TableViewController.swift */; };
 		B421B9F627EECAED00C3BD58 /* ScrollViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B421B9F527EECAED00C3BD58 /* ScrollViewController.swift */; };
@@ -29,6 +30,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		98AFEBC36F0717F150DE0143 /* Pods-XYSegmentView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XYSegmentView.debug.xcconfig"; path = "Target Support Files/Pods-XYSegmentView/Pods-XYSegmentView.debug.xcconfig"; sourceTree = "<group>"; };
+		A66EDEDF881AD04BBB2C820B /* Pods-XYSegmentView.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-XYSegmentView.release.xcconfig"; path = "Target Support Files/Pods-XYSegmentView/Pods-XYSegmentView.release.xcconfig"; sourceTree = "<group>"; };
+		B2A8B9708C876C5B11D5B260 /* Pods_XYSegmentView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_XYSegmentView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B40DDEB327B38F2E007A71CD /* DemoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewController.swift; sourceTree = "<group>"; };
 		B421B9F327EE053A00C3BD58 /* TableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TableViewController.swift; path = XYSegmentView/TableViewController.swift; sourceTree = SOURCE_ROOT; };
 		B421B9F527EECAED00C3BD58 /* ScrollViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollViewController.swift; sourceTree = "<group>"; };
@@ -57,17 +61,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09ABAE8CF68EC745B819715C /* Pods_XYSegmentView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3A436AEFABAEAA9865BBDE43 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				98AFEBC36F0717F150DE0143 /* Pods-XYSegmentView.debug.xcconfig */,
+				A66EDEDF881AD04BBB2C820B /* Pods-XYSegmentView.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		A75B36F7C1D683BCB0729CC0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B2A8B9708C876C5B11D5B260 /* Pods_XYSegmentView.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B456FDE427AFA56300A822CB = {
 			isa = PBXGroup;
 			children = (
 				B456FDEF27AFA56300A822CB /* XYSegmentView */,
 				B456FDEE27AFA56300A822CB /* Products */,
+				3A436AEFABAEAA9865BBDE43 /* Pods */,
+				A75B36F7C1D683BCB0729CC0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,9 +145,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B456FE0127AFA56600A822CB /* Build configuration list for PBXNativeTarget "XYSegmentView" */;
 			buildPhases = (
+				E1EDE6354ADBB7DCA8BD0ABC /* [CP] Check Pods Manifest.lock */,
 				B456FDE927AFA56300A822CB /* Sources */,
 				B456FDEA27AFA56300A822CB /* Frameworks */,
 				B456FDEB27AFA56300A822CB /* Resources */,
+				6036F27ADF530B4A31E0A042 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -181,6 +207,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6036F27ADF530B4A31E0A042 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-XYSegmentView/Pods-XYSegmentView-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-XYSegmentView/Pods-XYSegmentView-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-XYSegmentView/Pods-XYSegmentView-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E1EDE6354ADBB7DCA8BD0ABC /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-XYSegmentView-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B456FDE927AFA56300A822CB /* Sources */ = {
@@ -346,6 +414,7 @@
 		};
 		B456FE0227AFA56600A822CB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 98AFEBC36F0717F150DE0143 /* Pods-XYSegmentView.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -365,6 +434,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyou.XYSegmentView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -375,6 +445,7 @@
 		};
 		B456FE0327AFA56600A822CB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A66EDEDF881AD04BBB2C820B /* Pods-XYSegmentView.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -394,6 +465,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xiaoyou.XYSegmentView;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
