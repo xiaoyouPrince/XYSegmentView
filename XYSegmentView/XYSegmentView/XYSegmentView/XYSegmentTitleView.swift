@@ -6,12 +6,17 @@
 //
 
 import UIKit
+#if canImport(SDWebImageWebPCoder)
+import SDWebImage
+import SDWebImageWebPCoder
+#endif
 
 // defaultScrollLineHeight = 8
 // default kNormalColor = (85, 85, 85)
 // default kSelectColor = (255, 128, 0)
 
 class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
+    var widthConstraint: NSLayoutConstraint = .init()
     
     var titleView: XYSegmentTitleView {
         func findSuperXYSegmentTitleView(for view: UIView) -> XYSegmentTitleView? {
@@ -216,6 +221,15 @@ extension XYSegmentTitleView{
              先计算图片在确定高度的 Item 容器中真实的 fit 宽度， 加上 margin / 2 即 item 容器应该更新的 width
              */
             
+//            SDAnimatedImageView
+//            let image = /*UIImage(data: data)*/SDImageWebPCoder.shared.decodedImage(with: data, options: nil)
+            
+            #if DEBUG
+            print("debug")
+            #else
+            print("release")
+            #endif
+            
             if let url = URL(string: title), url.scheme != nil {
                 DispatchQueue.global().async {
                     if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
@@ -232,19 +246,21 @@ extension XYSegmentTitleView{
                             let fitWidth: CGFloat = orignalImageWidth / heightScale
                             let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
                             
-                            NSLayoutConstraint.activate([
-                                NSLayoutConstraint.init(item: iv, attribute: .leading, relatedBy: .equal, toItem: item, attribute: .leading, multiplier: 1.0, constant: titleMargin / 2),
-                                NSLayoutConstraint.init(item: iv, attribute: .trailing, relatedBy: .equal, toItem: item, attribute: .trailing, multiplier: 1.0, constant: -titleMargin / 2),
-                                iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
-                                iv.topAnchor.constraint(equalTo: item.topAnchor),
-                                iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
-                            ])
-                            
                             if !isAverageLayout {
+                                NSLayoutConstraint.deactivate([
+                                    item.widthConstraint
+                                ])
                                 NSLayoutConstraint.activate([
                                     item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
                                 ])
                             }
+                            
+                            NSLayoutConstraint.activate([
+                                iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
+                                iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
+                                iv.topAnchor.constraint(equalTo: item.topAnchor),
+                                iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
+                            ])
                         }
                     } else { // 图片加载失败, 默认图?
                         
@@ -264,20 +280,22 @@ extension XYSegmentTitleView{
                 label.frame = item.bounds
                 
                 item.translatesAutoresizingMaskIntoConstraints = false
+                let widthConstraint = item.widthAnchor.constraint(equalToConstant: labelW)
+                item.widthConstraint = widthConstraint
                 if let lastItem = titleItems.last {
                     if index == titles.count - 1 {
                         NSLayoutConstraint.activate([
                             item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
                             item.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
                             item.topAnchor.constraint(equalTo: contentView.topAnchor),
-                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.widthConstraint,
                             item.heightAnchor.constraint(equalToConstant: labelH)
                         ])
                     } else {
                         NSLayoutConstraint.activate([
                             item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
                             item.topAnchor.constraint(equalTo: contentView.topAnchor),
-                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.widthConstraint,
                             item.heightAnchor.constraint(equalToConstant: labelH)
                         ])
                     }
@@ -285,11 +303,11 @@ extension XYSegmentTitleView{
                     NSLayoutConstraint.activate([
                         item.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
                         item.topAnchor.constraint(equalTo: contentView.topAnchor),
-                        item.widthAnchor.constraint(equalToConstant: labelW),
+                        item.widthConstraint,
                         item.heightAnchor.constraint(equalToConstant: labelH)
                     ])
                 }
-            }else{                
+            }else{
                 let labelW : CGFloat = label.bounds.width + titleMargin
                 let labelX : CGFloat = totoalWidth
                 totoalWidth += labelW
@@ -297,20 +315,22 @@ extension XYSegmentTitleView{
                 label.frame = item.bounds
                 
                 item.translatesAutoresizingMaskIntoConstraints = false
+                let widthConstraint = item.widthAnchor.constraint(equalToConstant: labelW)
+                item.widthConstraint = widthConstraint
                 if let lastItem = titleItems.last {
                     if index == titles.count - 1 {
                         NSLayoutConstraint.activate([
                             item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
                             item.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
                             item.topAnchor.constraint(equalTo: contentView.topAnchor),
-                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.widthConstraint,
                             item.heightAnchor.constraint(equalToConstant: labelH)
                         ])
                     } else {
                         NSLayoutConstraint.activate([
                             item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
                             item.topAnchor.constraint(equalTo: contentView.topAnchor),
-                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.widthConstraint,
                             item.heightAnchor.constraint(equalToConstant: labelH)
                         ])
                     }
@@ -318,7 +338,7 @@ extension XYSegmentTitleView{
                     NSLayoutConstraint.activate([
                         item.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
                         item.topAnchor.constraint(equalTo: contentView.topAnchor),
-                        item.widthAnchor.constraint(equalToConstant: labelW),
+                        item.widthConstraint,
                         item.heightAnchor.constraint(equalToConstant: labelH)
                     ])
                 }
