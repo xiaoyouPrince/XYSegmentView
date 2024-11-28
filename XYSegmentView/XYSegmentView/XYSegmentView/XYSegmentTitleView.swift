@@ -14,7 +14,19 @@ import UIKit
 class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
     
     var titleView: XYSegmentTitleView {
-        if let titleView = superview?.superview as? XYSegmentTitleView{
+        func findSuperXYSegmentTitleView(for view: UIView) -> XYSegmentTitleView? {
+            if let rlt = view.superview as? XYSegmentTitleView {
+                return rlt
+            } else {
+                if let superview = view.superview {
+                    return findSuperXYSegmentTitleView(for: superview)
+                } else {
+                    return nil
+                }
+            }
+        }
+        
+        if let titleView = findSuperXYSegmentTitleView(for: self) {
             return titleView
         }
         return XYSegmentTitleView(frame: .zero, titles: [])
@@ -169,6 +181,16 @@ extension XYSegmentTitleView{
         let labelH : CGFloat = frame.height - kScrollLineH
         let labelY : CGFloat = 0.0
         
+        let contentView = UIView()
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: labelH)
+        ])
+        
         var totoalWidth : CGFloat = 0
         for (index,title) in titles.enumerated(){
             
@@ -186,20 +208,43 @@ extension XYSegmentTitleView{
             label.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
             label.textAlignment = .center
             label.sizeToFit()
+            label.layer.borderColor = UIColor.red.cgColor
+            label.layer.borderWidth = 1
+            
+            /*
+             1. 图片加载完成的布局， 图片本身（imageView, contentModeFit） + item 容器的宽度（高度是 config 中设置 titleViewFrame 固定的）
+             先计算图片在确定高度的 Item 容器中真实的 fit 宽度， 加上 margin / 2 即 item 容器应该更新的 width
+             */
             
             if let url = URL(string: title), url.scheme != nil {
                 DispatchQueue.global().async {
                     if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
                         DispatchQueue.main.async {
                             let iv = UIImageView(image: image)
+                            iv.contentMode = .scaleAspectFit
                             item.addSubview(iv)
+                            item.backgroundColor = .green
+                            iv.backgroundColor = .red
                             iv.translatesAutoresizingMaskIntoConstraints = false
+                            
+                            let orignalImageWidth = image.size.width
+                            let heightScale = image.size.height / item.bounds.height
+                            let fitWidth: CGFloat = orignalImageWidth / heightScale
+                            let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
+                            
                             NSLayoutConstraint.activate([
-                                iv.leadingAnchor.constraint(equalTo: item.leadingAnchor),
-                                iv.trailingAnchor.constraint(equalTo: item.trailingAnchor),
+                                NSLayoutConstraint.init(item: iv, attribute: .leading, relatedBy: .equal, toItem: item, attribute: .leading, multiplier: 1.0, constant: titleMargin / 2),
+                                NSLayoutConstraint.init(item: iv, attribute: .trailing, relatedBy: .equal, toItem: item, attribute: .trailing, multiplier: 1.0, constant: -titleMargin / 2),
+                                iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
                                 iv.topAnchor.constraint(equalTo: item.topAnchor),
                                 iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
                             ])
+                            
+                            if !isAverageLayout {
+                                NSLayoutConstraint.activate([
+                                    item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
+                                ])
+                            }
                         }
                     } else { // 图片加载失败, 默认图?
                         
@@ -209,31 +254,75 @@ extension XYSegmentTitleView{
                 item.addSubview(label)
             }
             
-
-            // 3. 设置frame
+            // 3.添加
+            contentView.addSubview(item)
+            
+            // 4. 布局
             if isAverageLayout {
                 let labelX : CGFloat = CGFloat(index) * labelW
                 item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
                 label.frame = item.bounds
-            }else{
-                if let url = URL(string: title), url.scheme != nil {
-                    let labelW : CGFloat = 100 + titleMargin // 图片默认 100 宽度
-                    let labelX : CGFloat = totoalWidth
-                    totoalWidth += labelW
-                    item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
-                    label.frame = item.bounds
+                
+                item.translatesAutoresizingMaskIntoConstraints = false
+                if let lastItem = titleItems.last {
+                    if index == titles.count - 1 {
+                        NSLayoutConstraint.activate([
+                            item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
+                            item.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                            item.topAnchor.constraint(equalTo: contentView.topAnchor),
+                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.heightAnchor.constraint(equalToConstant: labelH)
+                        ])
+                    } else {
+                        NSLayoutConstraint.activate([
+                            item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
+                            item.topAnchor.constraint(equalTo: contentView.topAnchor),
+                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.heightAnchor.constraint(equalToConstant: labelH)
+                        ])
+                    }
                 } else {
-                    let labelW : CGFloat = label.bounds.width + titleMargin
-                    let labelX : CGFloat = totoalWidth
-                    totoalWidth += labelW
-                    item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
-                    label.frame = item.bounds
+                    NSLayoutConstraint.activate([
+                        item.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                        item.topAnchor.constraint(equalTo: contentView.topAnchor),
+                        item.widthAnchor.constraint(equalToConstant: labelW),
+                        item.heightAnchor.constraint(equalToConstant: labelH)
+                    ])
+                }
+            }else{                
+                let labelW : CGFloat = label.bounds.width + titleMargin
+                let labelX : CGFloat = totoalWidth
+                totoalWidth += labelW
+                item.frame = CGRect(x: labelX, y: labelY, width: labelW, height: labelH)
+                label.frame = item.bounds
+                
+                item.translatesAutoresizingMaskIntoConstraints = false
+                if let lastItem = titleItems.last {
+                    if index == titles.count - 1 {
+                        NSLayoutConstraint.activate([
+                            item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
+                            item.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+                            item.topAnchor.constraint(equalTo: contentView.topAnchor),
+                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.heightAnchor.constraint(equalToConstant: labelH)
+                        ])
+                    } else {
+                        NSLayoutConstraint.activate([
+                            item.leadingAnchor.constraint(equalTo: lastItem.trailingAnchor),
+                            item.topAnchor.constraint(equalTo: contentView.topAnchor),
+                            item.widthAnchor.constraint(equalToConstant: labelW),
+                            item.heightAnchor.constraint(equalToConstant: labelH)
+                        ])
+                    }
+                } else {
+                    NSLayoutConstraint.activate([
+                        item.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+                        item.topAnchor.constraint(equalTo: contentView.topAnchor),
+                        item.widthAnchor.constraint(equalToConstant: labelW),
+                        item.heightAnchor.constraint(equalToConstant: labelH)
+                    ])
                 }
             }
-
-
-            // 4.添加
-            scrollView.addSubview(item)
 
             // 5.添加到Label的数组中
             titleItems.append(item)
@@ -245,8 +334,9 @@ extension XYSegmentTitleView{
             
         }
         
-        scrollView.contentSize = CGSize(width: titleItems.last!.frame.maxX, height: 0)
-        
+        if isAverageLayout {
+            scrollView.contentSize = CGSize(width: titleItems.last!.frame.maxX, height: 0)
+        }
     }
     // MARK: - 设置底线 和 可以滚动的线
     private func setupBottomLineAndScrollLines(){
