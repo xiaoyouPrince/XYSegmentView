@@ -232,39 +232,84 @@ extension XYSegmentTitleView{
             
             if let url = URL(string: title), url.scheme != nil {
                 DispatchQueue.global().async {
-                    if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
-                        DispatchQueue.main.async {
-                            let iv = UIImageView(image: image)
-                            iv.contentMode = .scaleAspectFit
-                            item.addSubview(iv)
-                            item.backgroundColor = .green
-                            iv.backgroundColor = .red
-                            iv.translatesAutoresizingMaskIntoConstraints = false
-                            
-                            let orignalImageWidth = image.size.width
-                            let heightScale = image.size.height / item.bounds.height
-                            let fitWidth: CGFloat = orignalImageWidth / heightScale
-                            let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
-                            
-                            if !isAverageLayout {
-                                NSLayoutConstraint.deactivate([
-                                    item.widthConstraint
-                                ])
+                    var url = url
+                    if title.contains("apng"), let pngUrl = Bundle.main.url(forResource: "apng", withExtension: "png") {
+                        url = pngUrl
+                    }
+                    SDWebImageDownloader.shared.downloadImage(with: url) { uiImage, imageData, error, finished in
+                        if let image = uiImage, finished, let imageData = imageData {
+                            DispatchQueue.main.async {
+                                // webp / gif / apng
+                                let gifImage = SDImageGIFCoder.shared.decodedImage(with: imageData)
+                                let apngIamge = SDImageAPNGCoder.shared.decodedImage(with: imageData)
+                                let webpImage = SDImageWebPCoder.shared.decodedImage(with: imageData, options: nil)
+                                var image = gifImage ?? webpImage ?? apngIamge ?? image
+                                let iv = SDAnimatedImageView(image: image)
+                                
+                                iv.contentMode = .scaleAspectFit
+                                item.addSubview(iv)
+                                item.backgroundColor = .green
+                                iv.backgroundColor = .red
+                                iv.translatesAutoresizingMaskIntoConstraints = false
+                                
+                                let orignalImageWidth = image.size.width
+                                let heightScale = image.size.height / item.bounds.height
+                                let fitWidth: CGFloat = orignalImageWidth / heightScale
+                                let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
+                                
+                                if !isAverageLayout {
+                                    NSLayoutConstraint.deactivate([
+                                        item.widthConstraint
+                                    ])
+                                    NSLayoutConstraint.activate([
+                                        item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
+                                    ])
+                                }
+                                
                                 NSLayoutConstraint.activate([
-                                    item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
+                                    iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
+                                    iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
+                                    iv.topAnchor.constraint(equalTo: item.topAnchor),
+                                    iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
                                 ])
                             }
                             
-                            NSLayoutConstraint.activate([
-                                iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
-                                iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
-                                iv.topAnchor.constraint(equalTo: item.topAnchor),
-                                iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
-                            ])
                         }
-                    } else { // 图片加载失败, 默认图?
-                        
                     }
+                    
+//                    if let data = try? Data(contentsOf: url), let image = UIImage(data: data), false {
+//                        DispatchQueue.main.async {
+//                            let iv = UIImageView(image: image)
+//                            iv.contentMode = .scaleAspectFit
+//                            item.addSubview(iv)
+//                            item.backgroundColor = .green
+//                            iv.backgroundColor = .red
+//                            iv.translatesAutoresizingMaskIntoConstraints = false
+//                            
+//                            let orignalImageWidth = image.size.width
+//                            let heightScale = image.size.height / item.bounds.height
+//                            let fitWidth: CGFloat = orignalImageWidth / heightScale
+//                            let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
+//                            
+//                            if !isAverageLayout {
+//                                NSLayoutConstraint.deactivate([
+//                                    item.widthConstraint
+//                                ])
+//                                NSLayoutConstraint.activate([
+//                                    item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
+//                                ])
+//                            }
+//                            
+//                            NSLayoutConstraint.activate([
+//                                iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
+//                                iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
+//                                iv.topAnchor.constraint(equalTo: item.topAnchor),
+//                                iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
+//                            ])
+//                        }
+//                    } else { // 图片加载失败, 默认图?
+//                        
+//                    }
                 }
             } else {
                 item.addSubview(label)

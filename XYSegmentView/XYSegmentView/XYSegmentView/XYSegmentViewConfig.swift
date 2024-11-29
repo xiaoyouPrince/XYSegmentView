@@ -16,6 +16,22 @@ public enum ScrollLineType {
     case dot
 }
 
+public class XYSegmentViewTitleModel: NSObject {
+    /// item 的标题，如果设置图片信息，优先展示图片信息，图片加载失败使用默认 title 标题
+    var title: String?
+    /// 图片远程 url
+    var imageUrlString: String?
+    /// 图片本地文件名，从 mainBundle 中查找
+    var imageName: String?
+    /// 图片类型，JPEG/GIF/WebP/APNG，若指定类型则直接使用对应解码器解码，反之按照  webp / gif / apng / jpeg 顺序解码
+    var imageType: String?
+    
+    /// 如果设置此值，则使用自定义的 titleItemVIew 的渲染实现。
+    /// - 内部使用自动布局， 优先使用 UIVIew 的宽度约束， 如果没有设置约束则默认使用其 width 作为约束
+    /// - UIView 的高度最终会以 titleFrame 的高度为准
+    var customItemViewHandler: (() -> UIView)?
+}
+
 public class XYSegmentViewConfig: NSObject {
     
     /// 设置XYSegmentView整体的 frame
@@ -34,8 +50,13 @@ public class XYSegmentViewConfig: NSObject {
     /// titleView 高度
     public var titleViewFrame: CGRect = CGRect(x: 0, y: 0, width: kScreenW, height: 44)
     
-    /// 快速设置 titleItem 为简单标题的 item
+    /// 快速设置 titleItem 为简单标题的 item，设置此属性仅支持展示普通文本
+    ///  - note： 如果需要 title 支持展示图片，请使用 titleModels 属性
     public var titles: [String] = ["没有","设置","分页","!"]
+    
+    /// 设置 titleItem 数据源
+    /// - note： 设置此属性之后，titles 失效
+    public var titleModels: [XYSegmentViewTitleModel] = []
     
     /// 两个 title 之间间距, 则以某个 title 为参考单边为 10.
     public var titleMargin: CGFloat = 20

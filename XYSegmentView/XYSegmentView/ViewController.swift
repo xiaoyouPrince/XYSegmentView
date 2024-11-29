@@ -21,9 +21,13 @@ class ViewController: UIViewController {
         // segmentView
         let segFrame = CGRect(x: 0, y: kNavHeight, width: kScreenW, height: kScreenH - kNavHeight)
         
+        /*
+         "https://hbimg.huaban.com/92f6ac625ff7dc6598d7f7a6db591f9c5bb800e12f717-KeSwPW_fw658",
+         "https://img0.baidu.com/it/u=1851588120,3407309413&fm=253&fmt=auto&app=138&f=PNG?w=480&h=400",
+         */
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
-        let titles = ["https://img1.baidu.com/it/u=3765411021,3468486124&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360", "sssss","仿写", "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp" ,"tableHeder","https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp","趣玩"];
+        let titles = ["https://img1.baidu.com/it/u=3765411021,3468486124&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360", "sssss","file://apng","仿写", "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp" ,"tableHeder","https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp","趣玩"];
         
         // content
         let contentY : CGFloat = titleViewH

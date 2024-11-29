@@ -27,6 +27,7 @@
 		B4BD7B1727B0C192008E1278 /* XYSegmentTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */; };
 		B4EBE9D127B162EB007BCEBD /* XYSegmentViewConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */; };
 		B4EBE9D327B2A10B007BCEBD /* XYSegmentPublicProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */; };
+		BEC4207D2CF872F0000CE449 /* apng.png in Resources */ = {isa = PBXBuildFile; fileRef = BEC4207C2CF872F0000CE449 /* apng.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		B4BD7B1627B0C192008E1278 /* XYSegmentTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentTitleView.swift; sourceTree = "<group>"; };
 		B4EBE9D027B162EB007BCEBD /* XYSegmentViewConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentViewConfig.swift; sourceTree = "<group>"; };
 		B4EBE9D227B2A10B007BCEBD /* XYSegmentPublicProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XYSegmentPublicProtocols.swift; sourceTree = "<group>"; };
+		BEC4207C2CF872F0000CE449 /* apng.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = apng.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				B4A6D78627F02D4700BE9807 /* ForwardViewController.swift */,
 				B456FDF627AFA56300A822CB /* Main.storyboard */,
 				B456FDF927AFA56600A822CB /* Assets.xcassets */,
+				BEC4207C2CF872F0000CE449 /* apng.png */,
 				B456FDFB27AFA56600A822CB /* LaunchScreen.storyboard */,
 				B456FDFE27AFA56600A822CB /* Info.plist */,
 			);
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B456FDFD27AFA56600A822CB /* LaunchScreen.storyboard in Resources */,
+				BEC4207D2CF872F0000CE449 /* apng.png in Resources */,
 				B456FDFA27AFA56600A822CB /* Assets.xcassets in Resources */,
 				B456FDF827AFA56300A822CB /* Main.storyboard in Resources */,
 			);
