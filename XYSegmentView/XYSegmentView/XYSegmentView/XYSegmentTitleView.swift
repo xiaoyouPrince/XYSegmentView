@@ -47,13 +47,26 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
     func setNormalState() {
         if let label = subviews.first as? UILabel {
             label.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
+            label.font = titleView.titleFont
+//            label.sizeToFit()
+            updateTitleContraints(with: label.bounds.size.width)
         }
     }
     
     func setSelectedState() {
         if let label = subviews.first as? UILabel {
             label.textColor = UIColor(r: kSelectColor.0, g: kSelectColor.1, b: kSelectColor.2)
+            label.font = titleView.titleSelectedFont
+//            label.sizeToFit()
+            updateTitleContraints(with: label.bounds.size.width)
         }
+    }
+    
+    private func updateTitleContraints(with width: CGFloat) {
+        // 1.移除旧 width constraint
+        // 2.更新新的 width constraint
+        
+        // 这里整个 label 的 constraint 都要更新，避免
     }
     
     func setState(with progress: CGFloat) {
@@ -86,7 +99,7 @@ protocol XYSegmentTitleViewDelegate : XYSegmentConfigProtocol {
 class XYSegmentTitleView: UIView {
     
     // MARK: - 自定义属性
-    fileprivate var titles : [String]
+    fileprivate var titles : [XYSegmentViewTitleModel]
     fileprivate var titleItems : [XYSegmentViewTitleItemProtocol & UIView] = [TitleItem]()
     fileprivate var titleLabels : [UILabel] = [UILabel]()
     fileprivate var currentIndex : Int = 0 // 设置默认的当前下标为0
@@ -116,7 +129,7 @@ class XYSegmentTitleView: UIView {
         return scrollLine
     }();
     
-    init(frame: CGRect, titles: [String]){
+    init(frame: CGRect, titles: [XYSegmentViewTitleModel]){
         
         if titles.isEmpty {
             fatalError("the titles can not be empty")
@@ -137,7 +150,7 @@ class XYSegmentTitleView: UIView {
     /// 重新刷新数据
     ///  - 只根据 delegate.config 数据刷新，不更新 frame
     func reloadData(){
-        self.titles = delegate?.config.titles ?? []
+        self.titles = delegate?.config.titleModels ?? []
         for (_, sv) in scrollView.subviews.enumerated() {
             if sv == scrollLine {
                 continue
@@ -162,6 +175,7 @@ extension XYSegmentTitleView{
         // 1.添加对应的scrollview
         addSubview(scrollView)
         scrollView.frame = self.bounds
+        scrollView.contentInset = delegate?.config.titleViewEdgeInsets ?? .zero
         
         // 2.添加lable
         setupTitleLabels()
@@ -197,11 +211,11 @@ extension XYSegmentTitleView{
         ])
         
         var totoalWidth : CGFloat = 0
-        for (index,title) in titles.enumerated(){
+        for (index,titleModel) in titles.enumerated(){
             
             let item = TitleItem()
             item.tag = index
-            
+            let title = titleModel.title
             
             // 1.创建Label
             let label = UILabel()
@@ -230,6 +244,8 @@ extension XYSegmentTitleView{
             print("release")
             #endif
             
+            // model 解析具体字段
+            
             if let url = URL(string: title), url.scheme != nil {
                 DispatchQueue.global().async {
                     var url = url
@@ -240,7 +256,6 @@ extension XYSegmentTitleView{
                         if let image = uiImage, finished, let imageData = imageData {
                             DispatchQueue.main.async {
                                 // webp / gif / apng
-                                
                                 var image = image
                                 if let gifImage = SDImageGIFCoder.shared.decodedImage(with: imageData) {
                                     image = gifImage
@@ -256,6 +271,7 @@ extension XYSegmentTitleView{
                                 item.backgroundColor = .green
                                 iv.backgroundColor = .red
                                 iv.translatesAutoresizingMaskIntoConstraints = false
+                                label.removeFromSuperview()
                                 
                                 let orignalImageWidth = image.size.width
                                 let heightScale = image.size.height / item.bounds.height
@@ -316,9 +332,9 @@ extension XYSegmentTitleView{
 //                        
 //                    }
                 }
-            } else {
-                item.addSubview(label)
             }
+            
+            item.addSubview(label)
             
             // 3.添加
             contentView.addSubview(item)
@@ -479,6 +495,10 @@ extension XYSegmentTitleView {
     
     var titleFont: UIFont {
         delegate?.config.titleFont ?? UIFont.systemFont(ofSize: 17)
+    }
+    
+    var titleSelectedFont: UIFont {
+        delegate?.config.titleSelectedFont ?? UIFont.systemFont(ofSize: 17)
     }
     
     var sliderInnerMargin: CGFloat {

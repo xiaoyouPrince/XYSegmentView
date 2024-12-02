@@ -18,7 +18,7 @@ public enum ScrollLineType {
 
 public class XYSegmentViewTitleModel: NSObject {
     /// item 的标题，如果设置图片信息，优先展示图片信息，图片加载失败使用默认 title 标题
-    var title: String?
+    var title: String
     /// 图片远程 url
     var imageUrlString: String?
     /// 图片本地文件名，从 mainBundle 中查找
@@ -30,6 +30,14 @@ public class XYSegmentViewTitleModel: NSObject {
     /// - 内部使用自动布局， 优先使用 UIVIew 的宽度约束， 如果没有设置约束则默认使用其 width 作为约束
     /// - UIView 的高度最终会以 titleFrame 的高度为准
     var customItemViewHandler: (() -> UIView)?
+    
+    init(title: String, imageUrlString: String? = nil, imageName: String? = nil, imageType: String? = nil, customItemViewHandler: ( () -> UIView)? = nil) {
+        self.title = title
+        self.imageUrlString = imageUrlString
+        self.imageName = imageName
+        self.imageType = imageType
+        self.customItemViewHandler = customItemViewHandler
+    }
 }
 
 public class XYSegmentViewConfig: NSObject {
@@ -47,18 +55,21 @@ public class XYSegmentViewConfig: NSObject {
     
     // MARK: - title 相关
     
-    /// titleView 高度
+    /// titleView frame
     public var titleViewFrame: CGRect = CGRect(x: 0, y: 0, width: kScreenW, height: 44)
+    
+    /// 设置 titleView 的 edgeInsets，可用于 titleView 的左右边距
+    public var titleViewEdgeInsets: UIEdgeInsets = .zero
     
     /// 快速设置 titleItem 为简单标题的 item，设置此属性仅支持展示普通文本
     ///  - note： 如果需要 title 支持展示图片，请使用 titleModels 属性
     public var titles: [String] = ["没有","设置","分页","!"]
     
-    /// 设置 titleItem 数据源
+    /// 设置 titleItem 数据源, 如果没有设置此属性则通过 titles 快捷生成
     /// - note： 设置此属性之后，titles 失效
     public var titleModels: [XYSegmentViewTitleModel] = []
     
-    /// 两个 title 之间间距, 则以某个 title 为参考单边为 10.
+    /// 两个 title 之间间距, 默认为 20pt，以某个 title 为参考单边为 10.
     public var titleMargin: CGFloat = 20
     
     /// 设置 title 在 titleView 中布局是否为均分宽度，默认 false
@@ -83,6 +94,9 @@ public class XYSegmentViewConfig: NSObject {
     /// - 此属性在自定义 titleItem 时候可能无效
     public var titleFont: UIFont?
     
+    /// 设置 title View 顶部只有普通文本被选中时候的 font
+    /// - 此属性在自定义 titleItem 时候可能无效
+    public var titleSelectedFont: UIFont?
     
     // MARK: - title 底部滑块 相关
     public var scrollLineType: ScrollLineType = .default

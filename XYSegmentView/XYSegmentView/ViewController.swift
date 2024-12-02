@@ -28,6 +28,27 @@ class ViewController: UIViewController {
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
         let titles = ["https://img1.baidu.com/it/u=3765411021,3468486124&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360", "sssss","file://apng","仿写", "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp" ,"tableHeder","https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp","趣玩"];
+    
+        
+        let titleModels: [XYSegmentViewTitleModel] = [
+            .init(title: "静态图",
+                  imageUrlString: "https://img1.baidu.com/it/u=3765411021,3468486124&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360",
+                  imageType: "jpeg"),
+            .init(title: "推荐"),
+            .init(title: "大象来也",
+                  imageUrlString: "https://img0.baidu.com/it/u=1851588120,3407309413&fm=253&fmt=auto&app=138&f=PNG?w=480&h=400",
+                  imageType: "apng"),
+            .init(title: "天马行空", imageName: "apng"),
+            .init(title: "仿写"),
+            .init(title: "动态壁纸",
+                  imageUrlString: "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp",
+                  imageType: "webp"),
+            .init(title: "TableHeader"),
+            .init(title: "🍌欢迎你",
+                  imageUrlString: "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
+                  imageType: "webp"),
+            .init(title: "趣玩")
+        ]
         
         // content
         let contentY : CGFloat = titleViewH
@@ -57,7 +78,10 @@ class ViewController: UIViewController {
         //config.contentScrollEnable = false
         
         config.titleViewFrame = titleFrame
+        config.titleViewEdgeInsets = .init(top: 0, left: 30, bottom: 0, right: 0)
+        config.titleSelectedFont = .boldSystemFont(ofSize: 20)
         config.titles = titles
+        config.titleModels = titleModels
         if titles.count <= 4 {
             config.isTitleAverageLayout = true
         }

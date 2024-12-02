@@ -39,7 +39,15 @@ public extension XYSegmentView {
     private func getTitleView() -> XYSegmentTitleView {
         let titleFrame = config.titleViewFrame
         let titles = config.titles
-        let titleView = XYSegmentTitleView.init(frame: titleFrame, titles: titles)
+        guard titles.isEmpty == false else { fatalError("config.titles can not be empty") }
+        var titleModels = config.titleModels
+        if titleModels.isEmpty {
+            titleModels = titles.map({ titleStr in
+                XYSegmentViewTitleModel(title: titleStr)
+            })
+        }
+        
+        let titleView = XYSegmentTitleView.init(frame: titleFrame, titles: titleModels)
         titleView.backgroundColor = UIColor.clear
         addSubview(titleView)
         titleView.delegate = self
