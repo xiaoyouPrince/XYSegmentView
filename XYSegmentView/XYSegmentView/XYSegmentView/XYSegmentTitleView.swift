@@ -240,10 +240,15 @@ extension XYSegmentTitleView{
                         if let image = uiImage, finished, let imageData = imageData {
                             DispatchQueue.main.async {
                                 // webp / gif / apng
-                                let gifImage = SDImageGIFCoder.shared.decodedImage(with: imageData)
-                                let apngIamge = SDImageAPNGCoder.shared.decodedImage(with: imageData)
-                                let webpImage = SDImageWebPCoder.shared.decodedImage(with: imageData, options: nil)
-                                var image = gifImage ?? webpImage ?? apngIamge ?? image
+                                
+                                var image = image
+                                if let gifImage = SDImageGIFCoder.shared.decodedImage(with: imageData) {
+                                    image = gifImage
+                                } else if let apngIamge = SDImageAPNGCoder.shared.decodedImage(with: imageData) {
+                                    image = apngIamge
+                                } else if let webpImage = SDImageWebPCoder.shared.decodedImage(with: imageData, options: nil) {
+                                    image = webpImage
+                                }
                                 let iv = SDAnimatedImageView(image: image)
                                 
                                 iv.contentMode = .scaleAspectFit
