@@ -21,22 +21,17 @@ public class XYSegmentViewTitleModel: NSObject {
     var title: String
     /// 图片远程 url
     var imageUrlString: String?
-    /// 图片本地文件名，从 mainBundle 中查找
+    /// 图片本地文件名, 需要完整指定图片名和格式 如 a.png，从 mainBundle 中查找
     var imageName: String?
-    /// 图片类型，JPEG/GIF/WebP/APNG，若指定类型则直接使用对应解码器解码，反之按照  webp / gif / apng / jpeg 顺序解码
-    var imageType: String?
+    ///  图片的占位图片, 如果设置了网络图片，在网络图片加载过程中展示的一个本地图片
+    ///   - 尚未实现， 先观察使用情况再看
+    var imagePlaceholder: String?
     
-    /// 如果设置此值，则使用自定义的 titleItemVIew 的渲染实现。
-    /// - 内部使用自动布局， 优先使用 UIVIew 的宽度约束， 如果没有设置约束则默认使用其 width 作为约束
-    /// - UIView 的高度最终会以 titleFrame 的高度为准
-    var customItemViewHandler: (() -> UIView)?
-    
-    init(title: String, imageUrlString: String? = nil, imageName: String? = nil, imageType: String? = nil, customItemViewHandler: ( () -> UIView)? = nil) {
+    init(title: String, imageUrlString: String? = nil, imageName: String? = nil, imagePlaceholder: String? = nil) {
         self.title = title
         self.imageUrlString = imageUrlString
         self.imageName = imageName
-        self.imageType = imageType
-        self.customItemViewHandler = customItemViewHandler
+        self.imagePlaceholder = imagePlaceholder
     }
 }
 

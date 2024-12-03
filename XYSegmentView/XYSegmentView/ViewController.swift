@@ -32,21 +32,17 @@ class ViewController: UIViewController {
         
         let titleModels: [XYSegmentViewTitleModel] = [
             .init(title: "静态图",
-                  imageUrlString: "https://img1.baidu.com/it/u=3765411021,3468486124&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360",
-                  imageType: "jpeg"),
+                  imageUrlString: "https://img1.baidu.com/it/u=3765411021,3468486124&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360"),
             .init(title: "推荐"),
             .init(title: "大象来也",
-                  imageUrlString: "https://img0.baidu.com/it/u=1851588120,3407309413&fm=253&fmt=auto&app=138&f=PNG?w=480&h=400",
-                  imageType: "apng"),
+                  imageUrlString: "https://img0.baidu.com/it/u=1851588120,3407309413&fm=253&fmt=auto&app=138&f=PNG?w=480&h=400"),
             .init(title: "天马行空", imageName: "apng.png"),
             .init(title: "仿写"),
             .init(title: "动态壁纸",
-                  imageUrlString: "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp",
-                  imageType: "webp"),
+                  imageUrlString: "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp"),
             .init(title: "TableHeader"),
             .init(title: "🍌欢迎你",
-                  imageUrlString: "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp",
-                  imageType: "webp"),
+                  imageUrlString: "https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp"),
             .init(title: "趣玩")
         ]
         
