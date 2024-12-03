@@ -38,7 +38,7 @@ class ViewController: UIViewController {
             .init(title: "大象来也",
                   imageUrlString: "https://img0.baidu.com/it/u=1851588120,3407309413&fm=253&fmt=auto&app=138&f=PNG?w=480&h=400",
                   imageType: "apng"),
-            .init(title: "天马行空", imageName: "apng"),
+            .init(title: "天马行空", imageName: "apng.png"),
             .init(title: "仿写"),
             .init(title: "动态壁纸",
                   imageUrlString: "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp",

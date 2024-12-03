@@ -96,6 +96,47 @@ protocol XYSegmentTitleViewDelegate : XYSegmentConfigProtocol {
     
 }
 
+extension XYSegmentViewTitleModel {
+    /// 是否是图片类型
+    var isImage: Bool {
+        return isImageLocal || isImageRemote
+    }
+    
+    /// 是否是图片类型_本地图
+    var isImageLocal: Bool {
+        if let imageName = imageName, !imageName.isEmpty {
+            return true
+        }
+        
+        return false
+    }
+    
+    /// 是否是图片类型_网络图
+    var isImageRemote: Bool {
+        if let imageUrl = imageUrlString, !imageUrl.isEmpty {
+            return true
+        }
+        return false
+    }
+    
+    /// 图片title的 URL，仅设置了图片类型有效
+    var imageUrl: URL? {
+        if isImage {
+            var result: URL?
+            if let imageName = imageName, let localUrl = Bundle.main.url(forResource: imageName, withExtension: nil) {
+                result = localUrl
+            }
+            
+            if let urlStr = imageUrlString, let remoteUrl = URL(string: urlStr), remoteUrl.scheme != nil {
+                result = remoteUrl
+            }
+            
+            return result
+        }
+        return nil
+    }
+}
+
 class XYSegmentTitleView: UIView {
     
     // MARK: - 自定义属性
@@ -235,49 +276,72 @@ extension XYSegmentTitleView{
              先计算图片在确定高度的 Item 容器中真实的 fit 宽度， 加上 margin / 2 即 item 容器应该更新的 width
              */
             
-//            SDAnimatedImageView
-//            let image = /*UIImage(data: data)*/SDImageWebPCoder.shared.decodedImage(with: data, options: nil)
-            
-            #if DEBUG
-            print("debug")
-            #else
-            print("release")
-            #endif
-            
             // model 解析具体字段
-            
-            if let url = URL(string: title), url.scheme != nil {
-                DispatchQueue.global().async {
-                    var url = url
-                    if title.contains("apng"), let pngUrl = Bundle.main.url(forResource: "apng", withExtension: "png") {
-                        url = pngUrl
-                    }
-                    SDWebImageDownloader.shared.downloadImage(with: url) { uiImage, imageData, error, finished in
-                        if let image = uiImage, finished, let imageData = imageData {
-                            DispatchQueue.main.async {
-                                // webp / gif / apng
-                                var image = image
-                                if let gifImage = SDImageGIFCoder.shared.decodedImage(with: imageData) {
-                                    image = gifImage
-                                } else if let apngIamge = SDImageAPNGCoder.shared.decodedImage(with: imageData) {
-                                    image = apngIamge
-                                } else if let webpImage = SDImageWebPCoder.shared.decodedImage(with: imageData, options: nil) {
-                                    image = webpImage
+            if titleModel.isImage, let url = titleModel.imageUrl {
+                do {
+                    DispatchQueue.global().async {
+                        #if canImport(SDWebImage)
+                        SDWebImageDownloader.shared.downloadImage(with: url) { uiImage, imageData, error, finished in
+                            if let image = uiImage, finished, let imageData = imageData {
+                                DispatchQueue.main.async {
+                                    // webp / gif / apng
+                                    var image = image
+                                    if let gifImage = SDImageGIFCoder.shared.decodedImage(with: imageData) {
+                                        image = gifImage
+                                    } else if let apngIamge = SDImageAPNGCoder.shared.decodedImage(with: imageData) {
+                                        image = apngIamge
+                                    } else if let webpImage = SDImageWebPCoder.shared.decodedImage(with: imageData, options: nil) {
+                                        image = webpImage
+                                    }
+                                    let iv = SDAnimatedImageView(image: image)
+                                    
+                                    iv.contentMode = .scaleAspectFit
+                                    item.addSubview(iv)
+                                    item.backgroundColor = .green
+                                    iv.backgroundColor = .red
+                                    iv.translatesAutoresizingMaskIntoConstraints = false
+                                    label.removeFromSuperview()
+                                    
+                                    let orignalImageWidth = image.size.width
+                                    let heightScale = image.size.height / item.bounds.height
+                                    let fitWidth: CGFloat = orignalImageWidth / heightScale
+                                    let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
+                                    
+                                    if !isAverageLayout {
+                                        NSLayoutConstraint.deactivate([
+                                            item.widthConstraint
+                                        ])
+                                        NSLayoutConstraint.activate([
+                                            item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
+                                        ])
+                                    }
+                                    
+                                    NSLayoutConstraint.activate([
+                                        iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
+                                        iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
+                                        iv.topAnchor.constraint(equalTo: item.topAnchor),
+                                        iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
+                                    ])
                                 }
-                                let iv = SDAnimatedImageView(image: image)
                                 
+                            }
+                        }
+                        #else
+                        if let data = try? Data(contentsOf: url), let image = UIImage(data: data) {
+                            DispatchQueue.main.async {
+                                let iv = UIImageView(image: image)
                                 iv.contentMode = .scaleAspectFit
                                 item.addSubview(iv)
                                 item.backgroundColor = .green
                                 iv.backgroundColor = .red
                                 iv.translatesAutoresizingMaskIntoConstraints = false
                                 label.removeFromSuperview()
-                                
+    
                                 let orignalImageWidth = image.size.width
                                 let heightScale = image.size.height / item.bounds.height
                                 let fitWidth: CGFloat = orignalImageWidth / heightScale
                                 let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
-                                
+    
                                 if !isAverageLayout {
                                     NSLayoutConstraint.deactivate([
                                         item.widthConstraint
@@ -286,7 +350,7 @@ extension XYSegmentTitleView{
                                         item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
                                     ])
                                 }
-                                
+    
                                 NSLayoutConstraint.activate([
                                     iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
                                     iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
@@ -294,43 +358,9 @@ extension XYSegmentTitleView{
                                     iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
                                 ])
                             }
-                            
                         }
+                        #endif
                     }
-                    
-//                    if let data = try? Data(contentsOf: url), let image = UIImage(data: data), false {
-//                        DispatchQueue.main.async {
-//                            let iv = UIImageView(image: image)
-//                            iv.contentMode = .scaleAspectFit
-//                            item.addSubview(iv)
-//                            item.backgroundColor = .green
-//                            iv.backgroundColor = .red
-//                            iv.translatesAutoresizingMaskIntoConstraints = false
-//                            
-//                            let orignalImageWidth = image.size.width
-//                            let heightScale = image.size.height / item.bounds.height
-//                            let fitWidth: CGFloat = orignalImageWidth / heightScale
-//                            let fitWidthWithMargin: CGFloat = fitWidth + titleMargin
-//                            
-//                            if !isAverageLayout {
-//                                NSLayoutConstraint.deactivate([
-//                                    item.widthConstraint
-//                                ])
-//                                NSLayoutConstraint.activate([
-//                                    item.widthAnchor.constraint(equalToConstant: fitWidthWithMargin)
-//                                ])
-//                            }
-//                            
-//                            NSLayoutConstraint.activate([
-//                                iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
-//                                iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
-//                                iv.topAnchor.constraint(equalTo: item.topAnchor),
-//                                iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
-//                            ])
-//                        }
-//                    } else { // 图片加载失败, 默认图?
-//                        
-//                    }
                 }
             }
             
