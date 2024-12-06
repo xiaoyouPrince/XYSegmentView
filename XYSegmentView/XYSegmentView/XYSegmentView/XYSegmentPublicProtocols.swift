@@ -65,6 +65,9 @@ public protocol XYSegmentViewTitleItemProtocol: AnyObject {
     /// 获取 item 的标题
     var title: String { get }
     
+    /// 当前是否是被选中状态
+    var isSelected: Bool { get }
+    
     /// 设置其普通状态
     func setNormalState()
     

@@ -6,6 +6,7 @@ target 'XYSegmentView' do
   use_frameworks!
 
   # Pods for XYSegmentView
-pod 'SDWebImageWebPCoder'
+#pod 'SDWebImageWebPCoder'
+pod 'SDWebImage'
 
 end

@@ -99,10 +99,15 @@ public class XYSegmentViewConfig: NSObject {
     /// 设置滑块的颜色
     public var scrollLineColor: UIColor?
     
+    /// 设置滑块的高度，当滑块类型为 .line 时候此值将作为滑块的固定宽度,
+    /// - 此属性仅在 scrollLineType = .line 时生效
+    public var scrollLineWidth: CGFloat?
+    
     /// 设置滑块的高度，当滑块类型为 .dot 时候此值将作为滑块的直径
     public var scrollLineHeight: CGFloat?
     
     /// 设置滑块的内边距，以 TitleItem 为准，设置其左右两侧边距
+    /// - 此属性仅在 scrollLineType = .default 时生效
     public var scrollLineInnerMargin: CGFloat = 0
     
     /// 设置滑块是否跟随滑动，即滑动过程是否有中间状态

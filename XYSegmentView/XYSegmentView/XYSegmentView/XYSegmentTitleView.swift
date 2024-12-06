@@ -16,6 +16,8 @@ import SDWebImageWebPCoder
 // default kSelectColor = (255, 128, 0)
 
 class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
+    var isSelected: Bool = false
+    
     var widthConstraint: NSLayoutConstraint = .init()
     
     var titleView: XYSegmentTitleView {
@@ -45,19 +47,22 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
     }
     
     func setNormalState() {
+        isSelected = false
         if let label = subviews.first as? UILabel {
             label.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
             label.font = titleView.titleFont
-//            label.sizeToFit()
             updateTitleContraints(with: label.bounds.size.width)
         }
     }
     
     func setSelectedState() {
+        titleView.titleItems.forEach { item in
+            item.setNormalState()
+        }
+        isSelected = true
         if let label = subviews.first as? UILabel {
             label.textColor = UIColor(r: kSelectColor.0, g: kSelectColor.1, b: kSelectColor.2)
             label.font = titleView.titleSelectedFont
-//            label.sizeToFit()
             updateTitleContraints(with: label.bounds.size.width)
         }
     }
@@ -65,7 +70,6 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
     private func updateTitleContraints(with width: CGFloat) {
         // 1.移除旧 width constraint
         // 2.更新新的 width constraint
-        
         // 这里整个 label 的 constraint 都要更新，避免
     }
     
@@ -84,6 +88,10 @@ class TitleItem: UIView, XYSegmentViewTitleItemProtocol {
             let colorDelta = (kSelectColor.0 - kNormalColor.0, kSelectColor.1 - kNormalColor.1, kSelectColor.2 - kNormalColor.2)
             
             label.textColor = UIColor(r: kNormalColor.0 + colorDelta.0 * progress, g: kNormalColor.1 + colorDelta.1 * progress, b: kNormalColor.2 + colorDelta.2 * progress)
+        }
+        
+        if progress >= 1.0 {
+            setSelectedState()
         }
     }
 }
@@ -268,8 +276,8 @@ extension XYSegmentTitleView{
             label.textColor = UIColor(r: kNormalColor.0, g: kNormalColor.1, b: kNormalColor.2)
             label.textAlignment = .center
             label.sizeToFit()
-            label.layer.borderColor = UIColor.red.cgColor
-            label.layer.borderWidth = 1
+//            label.layer.borderColor = UIColor.red.cgColor
+//            label.layer.borderWidth = 1
             
             /*
              1. 图片加载完成的布局， 图片本身（imageView, contentModeFit） + item 容器的宽度（高度是 config 中设置 titleViewFrame 固定的）
@@ -297,8 +305,8 @@ extension XYSegmentTitleView{
                                     
                                     iv.contentMode = .scaleAspectFit
                                     item.addSubview(iv)
-                                    item.backgroundColor = .green
-                                    iv.backgroundColor = .red
+//                                    item.backgroundColor = .green
+//                                    iv.backgroundColor = .red
                                     iv.translatesAutoresizingMaskIntoConstraints = false
                                     label.removeFromSuperview()
                                     
@@ -320,8 +328,11 @@ extension XYSegmentTitleView{
                                         iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
                                         iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
                                         iv.topAnchor.constraint(equalTo: item.topAnchor),
-                                        iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
+                                        iv.heightAnchor.constraint(equalToConstant: labelH)
                                     ])
+                                    
+                                    // update 当前的 item 下的 scrollLine
+                                    self.updateScrollLine(index: index)
                                 }
                                 
                             }
@@ -332,8 +343,8 @@ extension XYSegmentTitleView{
                                 let iv = UIImageView(image: image)
                                 iv.contentMode = .scaleAspectFit
                                 item.addSubview(iv)
-                                item.backgroundColor = .green
-                                iv.backgroundColor = .red
+//                                item.backgroundColor = .green
+//                                iv.backgroundColor = .red
                                 iv.translatesAutoresizingMaskIntoConstraints = false
                                 label.removeFromSuperview()
     
@@ -355,8 +366,11 @@ extension XYSegmentTitleView{
                                     iv.centerXAnchor.constraint(equalTo: item.centerXAnchor),
                                     iv.widthAnchor.constraint(equalToConstant: fitWidthWithMargin),
                                     iv.topAnchor.constraint(equalTo: item.topAnchor),
-                                    iv.heightAnchor.constraint(equalToConstant: item.bounds.height)
+                                    iv.heightAnchor.constraint(equalToConstant: labelH)
                                 ])
+                                
+                                // update 当前的 item 下的 scrollLine
+                                self.updateScrollLine(index: index)
                             }
                         }
                         #endif
@@ -454,6 +468,7 @@ extension XYSegmentTitleView{
             scrollView.contentSize = CGSize(width: titleItems.last!.frame.maxX, height: 0)
         }
     }
+    
     // MARK: - 设置底线 和 可以滚动的线
     private func setupBottomLineAndScrollLines(){
         
@@ -463,13 +478,33 @@ extension XYSegmentTitleView{
         bottomLine.frame = CGRect(x: 0, y: frame.height - bottomLineH , width: frame.width, height: bottomLineH)
         addSubview(bottomLine)
         
-        guard let label = titleItems.first else {return}
-        label.setSelectedState()
+        // only for first item setup
+        updateScrollLine(isSetup: true)
+    }
+    
+    /// 更新当前的 ScrollLine
+    /// 初始化的时候即首次更新
+    /// 如果titleItme 有异步图片则需要, 指定当前 index, 如果由于网络慢
+    private func updateScrollLine(index: Int = 0, isSetup: Bool = false) {
+        if titleItems.count <= index { return }
+        var label = titleItems[index]
+        if isSetup {
+            label.setSelectedState()
+        } else {
+            label = titleItems.first(where: { item in
+                item.isSelected
+            })!
+        }
+        setNeedsLayout()
+        layoutIfNeeded()
         
         doSlider { type in
             switch type {
             case .default:
                 scrollLine.frame = CGRect(x: label.bounds.origin.x + sliderInnerMargin, y: label.frame.origin.y+label.frame.height, width: label.frame.width - 2*sliderInnerMargin, height: kScrollLineH)
+                
+                print("--------", scrollLine.frame)
+                
             case .line:
                 fatalError("not implemented")
             case .dot:

@@ -18,13 +18,17 @@ class ViewController: UIViewController {
         title = "XYSegmentView"
         theVC = self
         
+        
         // segmentView
-        let segFrame = CGRect(x: 0, y: kNavHeight, width: kScreenW, height: kScreenH - kNavHeight)
+        // kNavHeight 计算的导航栏高度在这个场景下少 2.33, 不知为何
+        // let segFrame = CGRect(x: 0, y: kNavHeight, width: kScreenW, height: kScreenH - kNavHeight)
+        let segFrame = CGRect(x: 0, y: self.navigationController?.navigationBar.frame.maxY ?? 200, width: kScreenW, height: kScreenH - kNavHeight)
         
         /*
          "https://hbimg.huaban.com/92f6ac625ff7dc6598d7f7a6db591f9c5bb800e12f717-KeSwPW_fw658",
          "https://img0.baidu.com/it/u=1851588120,3407309413&fm=253&fmt=auto&app=138&f=PNG?w=480&h=400",
          */
+        
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
         let titles = ["https://img1.baidu.com/it/u=3765411021,3468486124&fm=253&fmt=auto&app=138&f=JPEG?w=360&h=360", "sssss","file://apng","仿写", "https://stage-cdn.fun-widget.haoqimiao.net/resource/static/column/20240308/1765990531488555008.webp" ,"tableHeder","https://isparta.github.io/compare-webp/image/gif_webp/webp/2.webp","趣玩"];
@@ -47,7 +51,7 @@ class ViewController: UIViewController {
         ]
         
         // content
-        let contentY : CGFloat = titleViewH
+        let contentY : CGFloat = titleFrame.maxY
         let contentH = segFrame.height - contentY
         let contentW = segFrame.width
         let contentFrame = CGRect(x: 0, y: contentY, width: contentW, height: contentH)
@@ -83,6 +87,9 @@ class ViewController: UIViewController {
         }
         config.titleMargin = 30
         config.titleViewBackgroundColor = .white
+        
+//        config.separatorHeight = 2
+//        config.separatorColor = .yellow
         
         config.containerViewFrame = contentFrame
         config.contentVCs = contentVcs
