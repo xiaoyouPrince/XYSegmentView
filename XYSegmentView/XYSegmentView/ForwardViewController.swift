@@ -119,14 +119,24 @@ public class ForwordContentView: UIView {
         }
     }
     
+//    public override func layoutSubviews() {
+//        super.layoutSubviews()
+//        contentScrollView.frame = bounds
+//        dataSource?.forwordView.frame = .init(x: 0, y: 0, width: bounds.width, height: forwordViewHeight)
+//        let height = forwordViewHeight + bounds.height
+//        contentScrollView.contentSize = .init(width: 0, height: height)
+//        listContentView.frame = .init(x: 0, y: dataSource?.forwordViewHeight ?? 0, width: bounds.width, height: bounds.height - 34)
+//        dataSource?.listView.frame = listContentView.bounds
+//        
+//    }
     public override func layoutSubviews() {
         super.layoutSubviews()
         contentScrollView.frame = bounds
         dataSource?.forwordView.frame = .init(x: 0, y: 0, width: bounds.width, height: forwordViewHeight)
-        let height = forwordViewHeight + bounds.height
+        let height = forwordViewHeight - listViewMaxContentOffsetY + bounds.height
         contentScrollView.contentSize = .init(width: 0, height: height)
-        listContentView.frame = .init(x: 0, y: dataSource?.forwordViewHeight ?? 0, width: bounds.width, height: bounds.height - 34)
-        dataSource?.listView.frame = listContentView.bounds
+        listContentView.frame = .init(x: 0, y: dataSource?.forwordViewHeight ?? 0, width: bounds.width, height: bounds.height - (forwordViewHeight - listViewMaxContentOffsetY))
+        currentScrollingListView?.frame = listContentView.bounds
         
     }
     

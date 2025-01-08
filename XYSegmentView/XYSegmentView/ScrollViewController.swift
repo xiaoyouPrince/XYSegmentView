@@ -38,9 +38,8 @@ class ScrollViewController: UIViewController {
     
     lazy var segmentView: XYSegmentView = {
         // segmentView
-//        let segFrame = CGRect(x: 0, y: CGFloat(headerHeight), width: kScreenW, height: kScreenH - kNavHeight - titleViewH)
-        let segHeight = kScreenH - kNavHeight - titleViewH - forwordHoverHeight
-        let segFrame = CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - kNavHeight - titleViewH - titleViewH)
+        let segHeight = kScreenH - (navigationController?.navigationBar.frame.maxY ?? kNavHeight) - titleViewH - (forwordViewHeight - forwordHoverHeight)
+        let segFrame = CGRect(x: 0, y: 0, width: kScreenW, height: segHeight)
         
         // title
         let titleFrame = CGRect(x: 0, y: 0, width: segFrame.width, height: titleViewH)
@@ -89,7 +88,7 @@ class ScrollViewController: UIViewController {
         config.userInfo = ["type": "demo"] // 自定义一个用户指定信息
         
         let seg = XYSegmentView(config: config)
-//        scrollView.addSubview(seg)
+        scrollView.addSubview(seg)
         return seg
     }()
 
@@ -101,8 +100,16 @@ class ScrollViewController: UIViewController {
         _ = segmentView
         scrollView.contentSize = CGSize(width: kScreenW, height: CGFloat(headerHeight) + segmentView.bounds.height)
         
-        conetntView.frame = CGRect(x: 0, y: 0, width: kScreenW, height: CGFloat(headerHeight) + segmentView.bounds.height)
+        conetntView.frame = view.bounds //CGRect(x: 0, y: 0, width: kScreenW, height: CGFloat(headerHeight) + segmentView.bounds.height)
         view.addSubview(conetntView)
+        
+        conetntView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            conetntView.topAnchor.constraint(equalTo: view.topAnchor),
+            conetntView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            conetntView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            conetntView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
         
         print(scrollView.frame, headerView.frame, segmentView.frame)
         
