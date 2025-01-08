@@ -36,6 +36,8 @@ class DemoView: UIView {
 
 class DefalutDemoViewController: UIViewController {
     
+    var abc = false
+    
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height - kNavHeight))
         self.view.addSubview(scrollView)
@@ -144,6 +146,18 @@ class DefalutDemoViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            scrollView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        if abc {
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: iPhoneX ? 34 : 0, right: 0)
+        }
     }
 
 }

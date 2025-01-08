@@ -18,7 +18,7 @@ class ScrollViewController: UIViewController {
     
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - kNavHeight - titleViewH))
-        scrollView.backgroundColor = .darkGray
+        scrollView.backgroundColor = .red
         view.addSubview(scrollView)
         scrollView.delegate = self
         if #available(iOS 11.0, *) {
@@ -32,13 +32,14 @@ class ScrollViewController: UIViewController {
     lazy var headerView: UIView = {
         let header = UIView(frame: CGRect(x: 0, y: 0, width: Int(kScreenW), height: headerHeight))
         header.backgroundColor = .green
-        scrollView.addSubview(header)
+//        scrollView.addSubview(header)
         return header
     }()
     
     lazy var segmentView: XYSegmentView = {
         // segmentView
 //        let segFrame = CGRect(x: 0, y: CGFloat(headerHeight), width: kScreenW, height: kScreenH - kNavHeight - titleViewH)
+        let segHeight = kScreenH - kNavHeight - titleViewH - forwordHoverHeight
         let segFrame = CGRect(x: 0, y: 0, width: kScreenW, height: kScreenH - kNavHeight - titleViewH - titleViewH)
         
         // title
@@ -55,7 +56,9 @@ class ScrollViewController: UIViewController {
         var contentVcs = [UIViewController]()
         for (index, _) in titles.enumerated() {
             if index == 0 {
-                contentVcs.append(DefalutDemoViewController())
+                let d = DefalutDemoViewController()
+                d.abc = true
+                contentVcs.append(d)
             }else{
                 
                 if index == 2 {
@@ -86,7 +89,7 @@ class ScrollViewController: UIViewController {
         config.userInfo = ["type": "demo"] // 自定义一个用户指定信息
         
         let seg = XYSegmentView(config: config)
-        scrollView.addSubview(seg)
+//        scrollView.addSubview(seg)
         return seg
     }()
 
