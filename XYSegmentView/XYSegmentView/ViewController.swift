@@ -11,9 +11,9 @@ var theVC = UIViewController()
 let titleViewH: CGFloat = 44
 
 class ViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         // Do any additional setup after loading the view.
         title = "XYSegmentView"
         theVC = self

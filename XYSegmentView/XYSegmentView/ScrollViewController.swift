@@ -88,17 +88,21 @@ class ScrollViewController: UIViewController {
         config.userInfo = ["type": "demo"] // 自定义一个用户指定信息
         
         let seg = XYSegmentView(config: config)
-        scrollView.addSubview(seg)
+//        scrollView.addSubview(seg)
         return seg
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let imgV = UIImageView(image: UIImage(named: "my_img"))
+        scrollView.addSubview(imgV)
 
         superScroll = scrollView
         _ = headerView
         _ = segmentView
-        scrollView.contentSize = CGSize(width: kScreenW, height: CGFloat(headerHeight) + segmentView.bounds.height)
+//        scrollView.contentSize = CGSize(width: kScreenW, height: CGFloat(headerHeight) + segmentView.bounds.height)
+        scrollView.contentSize = CGSize(width: kScreenW, height: imgV.image!.size.height)
         
         conetntView.frame = view.bounds //CGRect(x: 0, y: 0, width: kScreenW, height: CGFloat(headerHeight) + segmentView.bounds.height)
         view.addSubview(conetntView)

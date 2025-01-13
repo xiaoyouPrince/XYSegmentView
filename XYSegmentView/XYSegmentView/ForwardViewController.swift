@@ -101,22 +101,68 @@ public class ForwordContentView: UIView {
         lastOffsetY = scrollView.contentOffset.y
     }
     
+    /*
+     if up {
+        if scrollView.offset.y < maxOffsetY {
+            listView.contentOffset = .zero
+        }
+     } else { // down
+        if listView.contentOffset.y >= .zero {
+            scrollView.contentOffset = CGPoint(x: 0, y: listViewMaxContentOffsetY)
+        }
+     }
+     */
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        let isUp: Bool = scrollView.contentOffset.y > CGFloat(Int(lastOffsetY))
+        
+        
+        let trans = (scrollView.gestureRecognizers?.filter({ $0.isKind(of: UIPanGestureRecognizer.self)}).first as! UIPanGestureRecognizer).translation(in: scrollView.gestureRecognizers?.filter({ $0.isKind(of: UIPanGestureRecognizer.self)}).first?.view)
+        let isUp = trans.y < lastTrans.y
+        
+        lastTrans = trans
+        
+        print("isUp = \(isUp), trans = \(trans)")
+        
         
         guard let listView = currentScrollingListView else { return }
         if scrollView.contentOffset.y >= listViewMaxContentOffsetY {
             scrollView.contentOffset = CGPoint(x: 0, y: listViewMaxContentOffsetY)
         }
-        
-        if listView.contentOffset.y > 0 {
-            if scrollView.contentOffset.y <= 0 {
-                scrollView.contentOffset = .zero
-            }
-        }
-
-        if scrollView.contentOffset.y < 0 {
+        if scrollView.contentOffset.y <= 0 {
             scrollView.contentOffset = .zero
         }
+        
+//        if listView.contentOffset.y > 0 {
+//            if scrollView.contentOffset.y <= 0 {
+//                scrollView.contentOffset = .zero
+//            }
+//        }
+//
+//        if scrollView.contentOffset.y < 0 {
+//            scrollView.contentOffset = .zero
+//        }
+        
+        if isUp { // 往上滚动
+            if scrollView.contentOffset.y < listViewMaxContentOffsetY {
+                listView.contentOffset = .zero
+            } else {
+                
+            }
+        } else { // 往下滚动
+//            if listView.contentOffset.y >= .zero {
+//                scrollView.contentOffset = CGPoint(x: 0, y: listViewMaxContentOffsetY)
+//            }
+//            if scrollView.contentOffset.y < listViewMaxContentOffsetY {
+//                listView.contentOffset = .zero
+//            }
+            
+            if listView.contentOffset.y > 0 {
+                scrollView.contentOffset = CGPoint(x: 0, y: listViewMaxContentOffsetY)
+            } else if scrollView.contentOffset.y > 0 {
+                listView.contentOffset = .zero
+            }
+        }
+        lastOffsetY = scrollView.contentOffset.y
     }
     
 //    public override func layoutSubviews() {
@@ -141,6 +187,7 @@ public class ForwordContentView: UIView {
     }
     
     private var lastOffsetY: CGFloat = .zero
+    private var lastTrans: CGPoint = .zero
 }
 
 extension ForwordContentView {
